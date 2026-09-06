@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>萬里資訊｜工程師標籤機故障排查工具 v3.0</title>
+<link href="styles.css" rel="stylesheet"/></head>
+<body>
+<header><div class="top"><div class="logo">🛠️</div><div><div class="title">萬里資訊｜工程師標籤機故障排查工具</div><div class="sub">內部工程師使用｜進階診斷・指令・量測・維修紀錄</div></div><div class="stat" id="headerStat"></div><div class="offline">🔒 INTERNAL ENGINEER</div></div></header>
+<div style="max-width:1240px;margin:12px auto 0;padding:0 14px"><div style="background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:800">🔒 內部工程師版：含進階故障判斷、維修指令與拆機／量測資訊，請勿將此網址提供給客戶。</div></div>
+<noscript><div class="noscriptbox">⚠️ 此工程師工具需要 JavaScript。請使用 Microsoft Edge、Google Chrome 或 Safari 開啟。</div></noscript>
+<main>
+<section class="card">
+<h2>① 快速找到設備</h2>
+<div class="field searchbox"><label>直接搜尋型號 <small>最快</small></label><input autocomplete="off" id="modelSearch" placeholder="例如：ZT610、TH240、P4-650、220Xi4"/><div class="matches" id="matches"></div></div>
+<div class="row2">
+<div class="field"><label>品牌</label><select id="brand"><option selected value="">請選擇品牌</option><option value="Zebra">Zebra</option><option value="Argox">Argox</option><option value="TSC">TSC</option><option value="GoDEX">GoDEX</option><option value="TOSHIBA">TOSHIBA</option><option value="SATO">SATO</option><option value="Honeywell (Datamax/Intermec)">Honeywell (Datamax/Intermec)</option></select></div>
+<div class="field"><label>機型類別</label><select disabled id="type"><option selected value="">請先選擇品牌</option></select></div>
+</div>
+<div class="field"><label>產品系列</label><select disabled id="series"><option selected value="">請先選擇機型類別</option></select></div>
+<div class="field"><label>實際型號</label><select disabled id="model"><option selected value="">請先選擇產品系列</option></select></div>
+<div id="productInfo"></div>
+<div class="field"><label>故障症狀</label><select disabled id="symptom"><option selected value="">請先選擇實際型號</option></select></div>
+<div class="btnrow"><button class="btn primary" onclick="startCase()">開始排查</button><button class="btn secondary" onclick="resetCase()">重新開始</button></div>
+<hr class="divider"/>
+<h2>② 現場案件資料</h2>
+<div class="field"><label>客戶／公司 <small>可不填</small></label><input id="customer" placeholder="例如：○○食品"/></div>
+<div class="row2"><div class="field"><label>機台序號</label><input id="serial" placeholder="S/N"/></div><div class="field"><label>工程師</label><input id="engineer" placeholder="姓名"/></div></div>
+<div class="field"><label>額外觀察</label><textarea id="notes" placeholder="例如：開機即 Ribbon Out、FEED 無法走紙、客戶表示昨天仍正常…"></textarea></div>
+<div class="quick"><div class="qbox"><b>排查順序</b><span>耗材 → 安裝 → 設定 → 校正／感應器 → 機構 → 線路／主板。</span></div><div class="qbox"><b>現場安全</b><span>拆接頭、量阻值、拆印字頭前先斷電；帶電量測需依維修規範。</span></div></div>
+<hr class="divider"/>
+<h2>③ 案件紀錄</h2>
+<div class="btnrow"><button class="btn ghost" onclick="saveCase()">儲存本機紀錄</button><button class="btn ghost" onclick="showHistory()">查看紀錄</button></div>
+<div id="historyBox"></div>
+</section>
+<section class="card" id="work">
+<div class="tabs no-print"><button class="tab active" onclick="showTab('diag',this)">故障排查</button><button class="tab" onclick="showTab('tools',this)">工程師工具</button><button class="tab" onclick="showTab('catalog',this)">官網型號總覽</button></div>
+<div class="toolbox active" id="tab-diag"><div class="empty"><div class="big">🔧</div><b>先從左側選擇設備與症狀</b><br/><span class="small">也可以直接輸入型號搜尋。工具會依品牌／系列／型號帶出排查流程。</span></div></div>
+<div class="toolbox" id="tab-tools"></div>
+<div class="toolbox" id="tab-catalog"></div>
+</section>
+</main>
+<footer>產品型號資料依萬里資訊官網「標籤條碼列印機」分類整理，資料整理日期：2026-09-06。舊機／停產型號保留是為了現場維修，不等於目前仍在銷售。故障流程為現場維修輔助，不取代原廠 Service Manual。<br/>版本：3.0 Engineer Edition｜僅供內部工程師使用，不提供客戶端</footer>
+<script src="catalog.js" defer></script><script src="flows.js" defer></script><script src="app.js" defer></script>
+</body></html>

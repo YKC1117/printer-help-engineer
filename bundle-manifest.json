@@ -1,6 +1,7 @@
 {
   "standalone": [
-    "asset-guard.js"
+    "asset-guard.js",
+    "photo-ai-handoff.js"
   ],
   "css": [
     "styles.css",

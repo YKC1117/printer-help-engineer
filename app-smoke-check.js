@@ -14,14 +14,18 @@
     const health=window.KB_HEALTH;
     const requiredNodes=['brand','type','series','model','symptom','modelSearch','matches','productInfo','historyBox','tab-diag','tab-kb','tab-tools','tab-catalog'];
     const missingNodes=requiredNodes.filter(id=>!document.getElementById(id));
-    const assetFailures=Array.isArray(window.__assetLoadFailures)?window.__assetLoadFailures:[];
-    const runtimeFailures=Array.isArray(window.__runtimeFailures)?window.__runtimeFailures:[];
+    const guardReady=Array.isArray(window.__assetLoadFailures)&&Array.isArray(window.__runtimeFailures);
+    const optionalIsolationReady=typeof window.__loadOptionalFeature==='function'&&Array.isArray(window.__optionalFeatureFailures);
+    const assetFailures=guardReady?window.__assetLoadFailures:[];
+    const runtimeFailures=guardReady?window.__runtimeFailures:[];
     const coreFunctions=['startCase','resetCase','showTab','copyText','saveCase','showHistory','renderTools','renderCatalog','renderKB'];
     const missingFunctions=coreFunctions.filter(name=>typeof window[name]!=='function');
 
     const checks=[
       ['核心畫面節點完整',missingNodes.length===0],
       ['核心操作函式完整',missingFunctions.length===0],
+      ['資源守門器已啟動',guardReady],
+      ['可選工具隔離機制已啟動',optionalIsolationReady],
       ['型號 catalog',products.length>20],
       ['維修資料庫',kb.length>100],
       ['所有 catalog 型號都有專屬資料',missingCoverage.length===0],
@@ -35,8 +39,8 @@
       ['私人案例庫',Array.isArray(window.INTERNAL_CASE_LIBRARY)&&typeof window.registerSharedInternalCase==='function'],
       ['案例提交包',typeof window.prepareInternalCaseSubmission==='function'],
       ['正式 Bundle 模式',bundleMode],
-      ['資源載入無錯誤',assetFailures.length===0],
-      ['啟動期間無執行錯誤',runtimeFailures.length===0],
+      ['核心資源載入無錯誤',assetFailures.length===0],
+      ['核心啟動期間無執行錯誤',runtimeFailures.length===0],
       ['版本資訊',!!window.APP_BUILD?.version&&!!window.APP_BUILD?.updated]
     ];
     const failed=checks.filter(x=>!x[1]).map(x=>x[0]);
@@ -50,12 +54,14 @@
       missingCoverage,
       missingNodes,
       missingFunctions,
+      guardReady,
+      optionalIsolationReady,
       assetFailures:[...assetFailures],
       runtimeFailures:[...runtimeFailures],
       bundleMode
     };
     if(!failed.length){
-      console.info(`[萬里工程師工具] Smoke Check OK｜KB ${kb.length} 筆｜型號 ${products.length}/${products.length} 覆蓋｜Bundle OK`);
+      console.info(`[萬里工程師工具] Smoke Check OK｜KB ${kb.length} 筆｜型號 ${products.length}/${products.length} 覆蓋｜Bundle OK｜Optional isolation OK`);
       return;
     }
     console.error('[萬里工程師工具] Smoke Check failed:',window.APP_SMOKE);
@@ -67,6 +73,6 @@
     box.textContent=`⚠️ 工程師工具啟動自檢失敗：${failed.join('、')}。請暫停使用異常功能並查看畫面上方警告。`;
     document.body.insertBefore(box,document.body.firstChild);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,160),{once:true});
-  else setTimeout(run,160);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,180),{once:true});
+  else setTimeout(run,180);
 })();

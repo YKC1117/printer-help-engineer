@@ -42,8 +42,11 @@ jobs:
         run: node scripts/quality-audit.mjs
 
       - name: Syntax check JavaScript runtime assets
+        shell: bash
         run: |
-          node --check asset-guard.js
+          for file in $(node -e "const m=require('./bundle-manifest.json'); process.stdout.write((m.standalone||[]).join(' '))"); do
+            node --check "$file"
+          done
           node --check dist/repair-data.bundle.js
           node --check dist/engineer-app.bundle.js
 

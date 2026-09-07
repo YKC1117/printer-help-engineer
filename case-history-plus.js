@@ -114,10 +114,10 @@
     x.sharePreparedAt=new Date().toLocaleString('zh-TW');
     x.shareCaseId=packet.caseId;
     try{localStorage.setItem('printer_engineer_cases',JSON.stringify(list));}catch(e){}
+    showHistory();
     const box=el('caseSubmitPreview');
     if(box)box.innerHTML=`<div style="margin-top:10px;padding:10px 12px;border:1px solid #86efac;background:#f0fdf4;border-radius:10px"><b>✅ 已產生案例提交包並複製</b><div class="small" style="margin-top:4px">案例 ID：${esc(packet.caseId)}。直接貼到 ChatGPT，我會審核格式後加入私人 GitHub 共用案例庫。</div><div class="small" style="margin-top:4px">客戶名稱、完整序號、工程師姓名與一般備註不會放進提交包。</div></div>`;
     toast('案例提交包已複製，直接貼給 ChatGPT');
-    showHistory();
   };
 
   window.exportCaseHistory=function(){

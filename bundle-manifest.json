@@ -65,6 +65,7 @@
     "kb-integrity-check.js"
   ],
   "app": [
+    "app-version.js",
     "source-backed-flows.js",
     "app.js",
     "model-search-fuzzy-patch.js",

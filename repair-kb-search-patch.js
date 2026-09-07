@@ -12,6 +12,7 @@
   const norm=s=>String(s||'').toLowerCase().replace(/[\s_\-–—/／()（）\[\]【】]+/g,'');
 
   function evidenceType(a){
+    if(a.evidence==='oem-parts')return '原廠料號';
     if(String(a.evidence||'').startsWith('internal-field'))return '內部實機案例';
     if(a.evidence==='workflow-sop')return '工程 SOP';
     if((a.sources||[]).length)return '有來源資料';
@@ -44,7 +45,8 @@
     const tokens=q.split(/[\s,，、/／|｜]+/).map(x=>x.trim()).filter(x=>x.length>=2);
     const qn=norm(q);
     const wantsCase=/案例|實測|field|case/.test(q);
-    const wantsSop=/sop|保養|交機|完修|換件|料號|收機|交叉測試/.test(q);
+    const wantsSop=/sop|保養|交機|完修|換件|收機|交叉測試/.test(q);
+    const wantsParts=/料號|part\s*number|parts?|p\/n|pn|printhead|platen|cutter|主板|電源|psu|sensor|motor|belt/.test(q);
     return searchIndex.map(x=>{
       let score=0;
       if(!q)score=1;
@@ -64,6 +66,7 @@
         }
         if(wantsCase&&x.evidence.startsWith('internal-field'))score+=8;
         if(wantsSop&&x.evidence==='workflow-sop')score+=6;
+        if(wantsParts&&x.evidence==='oem-parts')score+=10;
         if(x.sourceCount)score+=1;
       }
       if(cur&&x.a.models.includes(cur))score+=4;
@@ -81,22 +84,13 @@
     if(!box||$('kbSearch'))return;
     const brands=['全部',...new Set(REPAIR_KB.map(a=>a.brand))];
     const cats=['全部',...new Set(REPAIR_KB.map(a=>a.category))];
-    const evidence=['全部','內部實機案例','工程 SOP','有來源資料','通用工程基線'];
+    const evidence=['全部','原廠料號','內部實機案例','工程 SOP','有來源資料','通用工程基線'];
     const cur=currentModel();
-    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；精確機型、完整故障片語與實機案例會優先排序。</div></div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Cutter、1015、印一印重開…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
+    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；原廠料號、精確機型、完整故障片語與實機案例會優先排序。</div></div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Printhead 料號、1015、印一印重開…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
 
     const input=$('kbSearch');
-    input.addEventListener('input',()=>{
-      clearTimeout(searchTimer);
-      searchTimer=setTimeout(()=>{visibleLimit=PAGE_SIZE;refreshResults(true)},180);
-    });
-    input.addEventListener('keydown',e=>{
-      if(e.key==='Enter'){
-        clearTimeout(searchTimer);
-        visibleLimit=PAGE_SIZE;
-        refreshResults(true);
-      }
-    });
+    input.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{visibleLimit=PAGE_SIZE;refreshResults(true)},180)});
+    input.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(searchTimer);visibleLimit=PAGE_SIZE;refreshResults(true)}});
     ['kbBrand','kbCat','kbEvidence','kbModelOnly'].forEach(id=>$(id)?.addEventListener('change',()=>{visibleLimit=PAGE_SIZE;refreshResults(true)}));
   }
 
@@ -134,9 +128,7 @@
   }
 
   window.renderKB=function(filters={}){
-    buildShell();
-    refreshModelState();
-    visibleLimit=PAGE_SIZE;
+    buildShell();refreshModelState();visibleLimit=PAGE_SIZE;
     if(filters.q!==undefined&&$('kbSearch'))$('kbSearch').value=filters.q;
     if(filters.brand!==undefined&&$('kbBrand'))$('kbBrand').value=filters.brand;
     if(filters.cat!==undefined&&$('kbCat'))$('kbCat').value=filters.cat;
@@ -144,6 +136,5 @@
     if(filters.modelOnly!==undefined&&$('kbModelOnly')&&!$('kbModelOnly').disabled)$('kbModelOnly').checked=!!filters.modelOnly;
     refreshResults(false);
   };
-
   try{renderKB=window.renderKB}catch(e){}
 })();

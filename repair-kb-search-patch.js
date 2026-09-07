@@ -1,6 +1,6 @@
 'use strict';
 
-// v3.3 大資料庫搜尋：完整索引全部資料，分批顯示；提高精確機型、完整片語與證據型內容的排序品質。
+// 大資料庫搜尋：完整索引全部資料，分批顯示；提高精確機型、完整片語與證據型內容的排序品質。
 (function(){
   if(typeof window.renderKB!=='function'||typeof window.REPAIR_KB==='undefined')return;
 
@@ -10,6 +10,7 @@
   let visibleLimit=60;
   const PAGE_SIZE=60;
   const norm=s=>String(s||'').toLowerCase().replace(/[\s_\-–—/／()（）\[\]【】]+/g,'');
+  const appVersion=()=>window.APP_BUILD?.version||'工程師版';
 
   function evidenceType(a){
     if(a.evidence==='oem-parts')return 'A｜原廠料號';
@@ -90,7 +91,7 @@
     const cur=currentModel();
     const ec=window.KB_HEALTH?.evidenceCount||{};
     const composition=Object.keys(ec).length?`A原廠料號 ${ec['A原廠料號']||ec['原廠料號']||0}｜B雙來源料號 ${ec['B雙來源料號']||0}｜內部實機案例 ${ec['內部實機案例']||0}｜工程 SOP ${ec['工程SOP']||0}｜有來源資料 ${ec['有來源資料']||0}｜通用基線 ${ec['通用工程基線']||0}`:'';
-    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。精確料號分為 A 原廠與 B 雙來源；搜尋時 A 級優先，B 級仍需下料前實機核對。</div>${composition?`<div class="small" style="margin-top:5px;font-weight:800">資料組成：${kbEsc(composition)}</div>`:''}</div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Printhead 料號、MH241 Platen、1015…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
+    box.innerHTML=`<div class="kb-head"><span class="badge">${kbEsc(appVersion())} 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。精確料號分為 A 原廠與 B 雙來源；搜尋時 A 級優先，B 級仍需下料前實機核對。</div>${composition?`<div class="small" style="margin-top:5px;font-weight:800">資料組成：${kbEsc(composition)}</div>`:''}</div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Printhead 料號、MH241 Platen、1015…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
 
     const input=$('kbSearch');
     input.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{visibleLimit=PAGE_SIZE;refreshResults(true)},180)});

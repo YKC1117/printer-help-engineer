@@ -1,7 +1,8 @@
 {
   "standalone": [
     "asset-guard.js",
-    "photo-ai-handoff.js"
+    "photo-ai-handoff.js",
+    "command-analyzer.js"
   ],
   "css": [
     "styles.css",

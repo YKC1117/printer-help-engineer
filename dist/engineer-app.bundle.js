@@ -7,8 +7,8 @@
 
 // 全站唯一版本來源。版本號、更新時間與時區只在此維護；其他模組一律讀取 window.APP_BUILD。
 window.APP_BUILD=Object.freeze({
-  version:'v4.8',
-  updated:'2026/09/07 16:27',
+  version:'v4.9',
+  updated:'2026/09/07 16:31',
   timezone:'Asia/Taipei',
   schema:1
 });
@@ -1705,12 +1705,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   const byId=id=>document.getElementById(id);
 
   const fields=[
-    ['eccZMethod','列印方式','Print Method','有碳帶 → 熱轉印；無碳帶的熱感紙 → 熱感應。'],
-    ['eccZMode','出紙模式','Print Mode','一般出紙後手撕 → 撕下；只有裝剝紙器／裁刀／回捲模組才選對應模式。'],
-    ['eccZDark','濃度 0～30','Darkness','數值越大越黑；太高可能糊字、條碼變粗。'],
-    ['eccZSpeed','速度 IPS','Speed','越快越省時；若列印變淡或不清楚就先降速。'],
-    ['eccZWidth','列印寬度 dots','Print Width','限制橫向可列印範圍；不確定可先留空。'],
-    ['eccZLength','標籤長度 dots','Label Length','限制單張走紙長度；不確定可先留空。']
+    ['eccZMethod','列印方式','Print Method','有碳帶 → 熱轉印；熱感紙且不裝碳帶 → 熱感應。熱轉印未裝碳帶常會報 Ribbon Out。'],
+    ['eccZMode','出紙模式','Print Mode','一般客戶多數用撕下；剝離／裁切／回捲只有裝對應模組時才選。'],
+    ['eccZDark','濃度 0～30','Darkness','印太淡就小幅增加；糊字、條碼太粗就降低，不要一次拉太多。'],
+    ['eccZSpeed','速度 IPS','Speed','列印不清楚、細字或特殊碳帶時先降速；正常就不用特別改。'],
+    ['eccZWidth','列印寬度 dots','Print Width','通常不用改；只有內容被截掉或橫向範圍不對時才需要調。'],
+    ['eccZLength','標籤長度 dots','Label Length','通常不用改；走紙長度異常先做校正，仍有需求再設定固定長度。']
   ];
 
   const optionText={
@@ -1753,21 +1753,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
-  function addModeReference(builder){
-    if(builder.querySelector('.ecc-mode-reference'))return;
-    const ref=document.createElement('div');
-    ref.className='ecc-mode-reference';
-    ref.innerHTML=`
-      <div class="ecc-mode-reference-title">常用模式對照</div>
-      <div class="ecc-mode-reference-grid">
-        <div><b>撕下 <span>（Tear-Off）</span></b><small>一般手撕標籤</small></div>
-        <div><b>剝離 <span>（Peel-Off）</span></b><small>有剝紙器時使用</small></div>
-        <div><b>裁切 <span>（Cutter）</span></b><small>有裁刀時使用</small></div>
-        <div><b>回捲 <span>（Rewind）</span></b><small>有回捲模組時使用</small></div>
-      </div>`;
-    const footer=builder.querySelector('.ecc-note');
-    if(footer)builder.insertBefore(ref,footer);
-    else builder.appendChild(ref);
+  function removeRedundantReference(builder){
+    builder.querySelectorAll('.ecc-mode-reference').forEach(x=>x.remove());
   }
 
   function localizeFooter(builder){
@@ -1777,13 +1764,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   function apply(){
     const builder=zebraBuilder();
-    if(!builder||builder.dataset.zhHelper==='1')return;
+    if(!builder)return;
+    removeRedundantReference(builder);
+    if(builder.dataset.zhHelper==='2')return;
     localizeOptions('eccZMethod');
     localizeOptions('eccZMode');
     fields.forEach(x=>decorateField(...x));
-    addModeReference(builder);
     localizeFooter(builder);
-    builder.dataset.zhHelper='1';
+    builder.dataset.zhHelper='2';
   }
 
   function safeApply(){

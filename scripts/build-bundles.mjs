@@ -103,9 +103,10 @@ function validateRepairData(){
     else if(src.length)evidenceCount['有來源資料']++;
     else evidenceCount['通用工程基線']++;
   }
-  if(errors.length)throw new Error(`維修資料驗證失敗（${errors.length}）：\n- ${errors.slice(0,30).join('\n- ')}`);
 
   const uncovered=[...knownModels].filter(m=>!coveredModels.has(m)).sort();
+  for(const m of uncovered)warnings.push(`catalog 型號沒有專屬資料：${m}`);
+
   const stats={
     schema:1,
     entryCount:kb.length,
@@ -117,9 +118,12 @@ function validateRepairData(){
     evidenceCount,
     brandCount,
     categoryCount,
-    validation:{errors:0,warnings:warnings.length,warningSample:warnings.slice(0,50)}
+    validation:{errors:errors.length,warnings:warnings.length,warningSample:warnings.slice(0,50)}
   };
   fs.writeFileSync(path.join(dist,'kb-stats.json'),JSON.stringify(stats,null,2)+'\n');
+
+  if(errors.length)throw new Error(`維修資料驗證失敗（${errors.length} errors）：\n- ${errors.slice(0,30).join('\n- ')}`);
+  if(warnings.length)throw new Error(`維修資料嚴格驗證失敗（${warnings.length} warnings）：\n- ${warnings.slice(0,30).join('\n- ')}`);
   return stats;
 }
 const kbStats=validateRepairData();

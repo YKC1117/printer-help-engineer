@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>萬里資訊｜工程師標籤機故障排查工具 v3.1</title>
+<title>萬里資訊｜工程師標籤機故障排查工具 v3.2</title>
 <link href="styles.css" rel="stylesheet"/>
 <link href="enhancements.css" rel="stylesheet"/>
+<link href="repair-kb.css" rel="stylesheet"/>
 </head>
 <body>
-<header><div class="top"><div class="logo">🛠️</div><div><div class="title">萬里資訊｜工程師標籤機故障排查工具</div><div class="sub">內部工程師使用｜快速診斷・進階排查・量測・維修紀錄</div></div><div class="stat" id="headerStat"></div><div class="offline">🔒 INTERNAL ENGINEER</div></div></header>
-<div style="max-width:1240px;margin:12px auto 0;padding:0 14px"><div style="background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:800">🔒 內部工程師版：含進階故障判斷、維修指令與拆機／量測資訊。優先使用「快速故障入口」，需要時再進入機型專屬流程。</div></div>
+<header><div class="top"><div class="logo">🛠️</div><div><div class="title">萬里資訊｜工程師標籤機故障排查工具</div><div class="sub">內部工程師使用｜快速診斷・原廠維修資料・量測・維修紀錄</div></div><div class="stat" id="headerStat"></div><div class="offline">🔒 INTERNAL ENGINEER</div></div></header>
+<div style="max-width:1240px;margin:12px auto 0;padding:0 14px"><div style="background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:800">🔒 內部工程師版：可直接進行進階故障判斷、Sensor／線路／機構／主板排查。v3.2 起加入原廠文件來源化維修資料庫；量測數值與拆裝仍以該機型 Service Manual 為最終依據。</div></div>
 <noscript><div class="noscriptbox">⚠️ 此工程師工具需要 JavaScript。請使用 Microsoft Edge、Google Chrome 或 Safari 開啟。</div></noscript>
 <main>
 <section class="card">
@@ -36,17 +37,24 @@
 <div id="historyBox"></div>
 </section>
 <section class="card" id="work">
-<div class="tabs no-print"><button class="tab active" onclick="showTab('diag',this)">故障排查</button><button class="tab" onclick="showTab('tools',this)">工程師工具</button><button class="tab" onclick="showTab('catalog',this)">官網型號總覽</button></div>
-<div class="toolbox active" id="tab-diag"><div class="empty"><div class="big">🔧</div><b>先搜尋型號，或直接點左側「快速故障入口」</b><br/><span class="small">不確定機型也可以先跑通用工程排查，再依結果縮小故障範圍。</span></div></div>
+<div class="tabs no-print"><button class="tab active" onclick="showTab('diag',this)">故障排查</button><button class="tab" onclick="showTab('kb',this)">維修資料庫</button><button class="tab" onclick="showTab('tools',this)">工程師工具</button><button class="tab" onclick="showTab('catalog',this)">官網型號總覽</button></div>
+<div class="toolbox active" id="tab-diag"><div class="empty"><div class="big">🔧</div><b>先搜尋型號，或直接點左側「快速故障入口」</b><br/><span class="small">選到支援機型後，常見症狀會優先套用原廠資料整理過的深度流程。</span></div></div>
+<div class="toolbox" id="tab-kb"></div>
 <div class="toolbox" id="tab-tools"></div>
 <div class="toolbox" id="tab-catalog"></div>
 </section>
 </main>
-<footer>產品型號資料依萬里資訊官網「標籤條碼列印機」分類整理，資料整理日期：2026-09-06。舊機／停產型號保留是為了現場維修，不等於目前仍在銷售。故障流程為現場維修輔助，不取代原廠 Service Manual。<br/>版本：3.1 Engineer Edition｜快速排查強化版｜僅供內部工程師使用</footer>
+<footer>v3.2 維修資料庫優先採原廠 User Guide／Support／官方工具資料，並搭配現場案例；舊機／停產型號保留供維修使用。任何特定 Pin、電壓、機構拆裝與零件規格仍以該機 Service Manual 為最終依據。<br/>版本：3.2 Engineer Edition｜Source-backed Repair Database｜僅供內部工程師使用</footer>
 <script src="catalog.js" defer></script>
 <script src="flows.js" defer></script>
 <script src="engineer-data-plus.js" defer></script>
 <script src="model-cases-plus.js" defer></script>
+<script src="repair-kb-core.js" defer></script>
+<script src="repair-kb-zebra.js" defer></script>
+<script src="repair-kb-tsc.js" defer></script>
+<script src="repair-kb-argox-general.js" defer></script>
+<script src="source-backed-flows.js" defer></script>
 <script src="app.js" defer></script>
 <script src="enhancements.js" defer></script>
+<script src="repair-kb-ui.js" defer></script>
 </body></html>

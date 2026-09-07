@@ -36,11 +36,11 @@
   function currentCase(){
     return {
       brand:value('brand'),model:value('model'),symptom:value('symptom'),notes:value('notes'),
-      customerText:value('photoAiCustomerText'),done:value('photoAiDone')
+      customerText:value('photoAiCustomerText'),done:value('photoAiDone'),confirmed:value('photoAiConfirmed')
     };
   }
   function inferFromText(c){
-    const text=`${c.customerText} ${c.notes} ${c.done} ${c.symptom}`.toLowerCase();
+    const text=`${c.customerText} ${c.notes} ${c.done} ${c.confirmed} ${c.symptom}`.toLowerCase();
     const products=(typeof PRODUCTS!=='undefined'&&Array.isArray(PRODUCTS))?PRODUCTS:[];
     let model='';
     if(text){
@@ -123,7 +123,8 @@
   const keywordGroups=[
     ['ribbon','色帶','碳帶'],['paper','media','紙張','紙','標籤'],['sensor','感應','感應器'],['校正','定位','跳標'],
     ['皺','皺碳'],['淡','模糊','不清楚'],['偏','走偏'],['error','錯誤','警報'],['cutter','切刀','裁刀'],['列印','print'],
-    ['motor','馬達'],['主板','mainboard','motherboard'],['電源','power'],['網路','network','ethernet'],['條碼','barcode'],['printhead','印字頭','列印頭']
+    ['motor','馬達'],['主板','mainboard','motherboard'],['電源','power'],['網路','network','ethernet'],['條碼','barcode'],['printhead','印字頭','列印頭'],
+    ['driver','驅動','usb','連線','windows','列印佇列','spooler']
   ];
   function contextKeywords(text){
     const t=String(text||'').toLowerCase();
@@ -134,7 +135,7 @@
     if(!kb.length)return [];
     const model=c.model||inferred.model||'';
     const brand=c.brand||inferred.brand||'';
-    const context=`${c.symptom} ${c.customerText} ${c.notes} ${c.done}`.toLowerCase().trim();
+    const context=`${c.symptom} ${c.customerText} ${c.notes} ${c.done} ${c.confirmed}`.toLowerCase().trim();
     const keys=contextKeywords(context);
     if(!model&&!brand&&!context)return [];
     return kb.map(x=>{
@@ -159,7 +160,7 @@
 
   function buildPrompt(){
     const c=currentCase(),inferred=inferFromText(c);
-    const hasText=!!(c.customerText||c.notes||c.done||c.symptom);
+    const hasText=!!(c.customerText||c.notes||c.done||c.confirmed||c.symptom);
     if(!state.images.length&&!hasText){
       setStatus('error','先放一張照片，或至少輸入一句客戶描述。型號不用選。');
       return '';
@@ -169,26 +170,36 @@
     const model=c.model||inferred.model||'未確認';
     const hints=kbHints(kb,!!c.model);
     const lines=[
-      '【標籤機快速排查】',
-      state.images.length?`照片：${state.images.length} 張（請先看照片）`:'照片：無',
+      '【標籤機快速排查｜已驗證事實優先】',
+      state.images.length?`照片：${state.images.length} 張（先看圖，但不要用照片推翻已驗證結果）`:'照片：無',
       `設備：${brand} / ${model}`,
       c.symptom?`症狀：${c.symptom}`:'',
       c.customerText?`客戶：${c.customerText}`:'',
       c.notes?`觀察：${c.notes}`:'',
       c.done?`已做：${c.done}`:'',
-      hints?`站內提示：\n${hints}`:'',
+      c.confirmed?`【已確認測試結果｜最高優先】${c.confirmed}`:'【已確認測試結果｜最高優先】未填',
+      hints?`站內提示（低於已確認測試結果）：\n${hints}`:'',
       '',
-      '不要寫長篇分析，直接幫工程師排除問題。',
-      '回覆固定只用下面格式：',
+      '判斷權重必須照這個順序：',
+      '1. 已確認測試結果／可重現結果',
+      '2. 照片中明確可見的錯誤文字、燈號、機構狀態',
+      '3. 客戶描述、現場觀察、已做步驟',
+      '4. 站內提示與一般經驗',
       '',
-      '【先判斷】最可能原因 1～3 個，短句即可。',
-      '【現在先做】最多 3 步，從最快、最安全、最容易排除的開始。每一步都寫「怎麼做 → 看到什麼代表什麼 → 下一步」。',
-      '【缺什麼】只有真的無法往下判斷時，才要求補 1 張照片或 1 個資訊。',
+      '重要規則：',
+      '- 已確認測試結果是事實，不是「其中一個可能」。除非有同等強度的反證，否則不得把主因改成其他猜測。',
+      '- 如果已確認結果寫「重裝驅動後恢復」「換線無改善」「拔掉某接頭後錯誤消失」等，先沿這條因果主線排查與驗證。',
+      '- 若照片或其他證據真的和已確認結果衝突，請明確寫「衝突：A vs B」，再指定只做 1 個最能判定誰對的驗證，不要直接改判。',
+      '- 照片的用途是辨識、補充、找矛盾，不是自動推翻已做的實測。',
       '',
-      '型號不確定就先從照片辨識；辨識不了也要先給通用安全檢查，不要卡住。',
+      '不要寫長篇分析。回覆固定只用：',
+      '【主因】目前最可信的原因 1 個；必要時再列 1 個次要原因。',
+      '【現在做】最多 3 步，每步寫「怎麼做 → 結果 A 代表什麼／結果 B 代表什麼」。',
+      '【衝突】只有資料互相矛盾才顯示，否則省略。',
+      '【缺什麼】真的卡住才要求補 1 個資訊或 1 張照片。',
+      '',
       '不要重述案件、不要教科書解釋、不要列一堆可能性、不要猜 Pin／線色／電壓／料號。',
-      '除非涉及拆機或帶電量測，否則不用一直寫安全提醒。',
-      '整體盡量控制在 250 字內，目標是讓我立刻照著做。'
+      '整體盡量控制在 220 字內，目標是讓工程師立刻照著做。'
     ].filter(Boolean);
     state.prompt=lines.join('\n');
     return state.prompt;
@@ -201,7 +212,8 @@
       const pre=byId('photoAiPrompt');if(pre)pre.textContent=p;
       const out=byId('photoAiOutput');if(out)out.hidden=false;
       ['photoAiCopy','photoAiOpen'].forEach(id=>{const el=byId(id);if(el)el.disabled=false});
-      setStatus('success',`✅ 快速排查已準備好${state.lastKbCount?`｜帶入 ${state.lastKbCount} 筆相關資料`:''}`);
+      const confirmed=value('photoAiConfirmed');
+      setStatus('success',`✅ 快速排查已準備好${confirmed?'｜已確認結果：高權重':''}${state.lastKbCount?`｜相關資料 ${state.lastKbCount} 筆`:''}`);
       byId('photoAiActions')?.scrollIntoView({behavior:'smooth',block:'nearest'});
     }finally{
       if(btn){btn.disabled=false;btn.textContent=old||'⚡ 產生快速排查'}
@@ -250,12 +262,15 @@
       #tab-photoai .photoai-file{min-width:0;display:grid;gap:2px}#tab-photoai .photoai-file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}#tab-photoai .photoai-file small{color:#64748b}
       #tab-photoai .photoai-empty{padding:10px;color:#64748b;font-size:12px}
       #tab-photoai .photoai-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}#tab-photoai .photoai-fields label{font-size:12px;font-weight:800}#tab-photoai textarea{min-height:74px;margin-top:5px}
+      #tab-photoai .photoai-confirmed{grid-column:1/-1;border:1px solid #facc15;background:#fffbeb;border-radius:11px;padding:9px 10px;color:#713f12}
+      #tab-photoai .photoai-confirmed textarea{background:#fffdf5;border-color:#facc15}
+      #tab-photoai .photoai-confirmed small{display:block;margin-top:4px;font-weight:500;color:#92400e}
       #tab-photoai .photoai-status{margin:9px 0;padding:8px 10px;border-radius:9px;font-size:12px;font-weight:750}#tab-photoai .photoai-status.info{background:#f1f5f9;color:#334155}#tab-photoai .photoai-status.success{background:#ecfdf5;color:#166534}#tab-photoai .photoai-status.error{background:#fef2f2;color:#991b1b}
       #tab-photoai .photoai-buildrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}#tab-photoai .photoai-build{font-size:15px;padding:11px 18px}
       #tab-photoai .photoai-output{margin-top:10px}#tab-photoai .photoai-output details{border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;padding:8px 10px}#tab-photoai .photoai-output summary{cursor:pointer;font-size:12px;font-weight:800;color:#475569}
       #tab-photoai .photoai-prompt{white-space:pre-wrap;word-break:break-word;max-height:320px;overflow:auto;margin:8px 0 0;border-top:1px solid #e2e8f0;padding-top:8px;font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;color:#334155}
       #tab-photoai button:disabled{opacity:.5;cursor:not-allowed}
-      @media(max-width:720px){#tab-photoai .photoai-fields{grid-template-columns:1fr}#tab-photoai .photoai-preview{grid-template-columns:70px minmax(0,1fr)}#tab-photoai .photoai-thumb{width:70px;height:58px}#tab-photoai .photoai-remove{grid-column:1/-1;width:100%}}
+      @media(max-width:720px){#tab-photoai .photoai-fields{grid-template-columns:1fr}#tab-photoai .photoai-confirmed{grid-column:1}#tab-photoai .photoai-preview{grid-template-columns:70px minmax(0,1fr)}#tab-photoai .photoai-thumb{width:70px;height:58px}#tab-photoai .photoai-remove{grid-column:1/-1;width:100%}}
     `;
     document.head.appendChild(style);
   }
@@ -268,7 +283,7 @@
 
     const panel=document.createElement('div');panel.className='toolbox';panel.id='tab-photoai';
     panel.innerHTML=`
-      <div class="hero"><div><span class="badge">可選模組｜快速排除</span><h1>AI 圖片快速排查</h1><div class="small">丟照片 → 補一句話（可省略）→ 直接排查。品牌、型號都不是必填。</div></div></div>
+      <div class="hero"><div><span class="badge">可選模組｜快速排除</span><h1>AI 圖片快速排查</h1><div class="small">照片是輔助；你已經測出來的結果，AI 會優先相信，不再重新亂猜。</div></div></div>
       <div class="photoai-topline"><b id="photoAiCaseLine">型號未確認｜直接看照片排查</b><span>照片只留在本機預覽</span></div>
 
       <div class="photoai-drop" id="photoAiDrop">
@@ -283,11 +298,15 @@
       <div class="photoai-previews" id="photoAiPreviews"></div>
 
       <div class="photoai-fields">
-        <label>② 客戶怎麼說（選填）<textarea id="photoAiCustomerText" placeholder="例如：昨天正常，今天一直顯示 Ribbon Out"></textarea></label>
-        <label>已經試過什麼（選填）<textarea id="photoAiDone" placeholder="例如：重裝碳帶、清 Sensor、重新校正"></textarea></label>
+        <label>② 客戶怎麼說（選填）<textarea id="photoAiCustomerText" placeholder="例如：昨天正常，今天列印沒有反應"></textarea></label>
+        <label>已經試過什麼（選填）<textarea id="photoAiDone" placeholder="例如：換 USB 線、重開機、重新插拔"></textarea></label>
+        <label class="photoai-confirmed">③ 已確認測試結果（最重要／選填）
+          <textarea id="photoAiConfirmed" placeholder="例如：重裝驅動後恢復正常；換 USB 線無改善。"></textarea>
+          <small>只有你真的測過、能重現或已證實的結果才填。AI 會把這裡當最高權重事實。</small>
+        </label>
       </div>
 
-      <div id="photoAiStatus" class="photoai-status info">型號不用選。只放照片就可以開始。</div>
+      <div id="photoAiStatus" class="photoai-status info">型號不用選。若已有實測結論，填「已確認測試結果」會大幅提高判斷一致性。</div>
       <div class="photoai-buildrow" id="photoAiActions">
         <button type="button" class="btn primary photoai-build" id="photoAiBuild">⚡ 產生快速排查</button>
         <button type="button" class="btn secondary" id="photoAiOpen" disabled>複製＋開 ChatGPT</button>
@@ -304,7 +323,7 @@
     byId('photoAiBuild')?.addEventListener('click',guarded('產生快速排查',buildAndShow));
     byId('photoAiCopy')?.addEventListener('click',guarded('複製排查內容',copyPrompt));
     byId('photoAiOpen')?.addEventListener('click',guarded('開啟 ChatGPT',copyAndOpen));
-    ['photoAiCustomerText','photoAiDone'].forEach(id=>byId(id)?.addEventListener('input',()=>{invalidate();renderCaseLine()}));
+    ['photoAiCustomerText','photoAiDone','photoAiConfirmed'].forEach(id=>byId(id)?.addEventListener('input',()=>{invalidate();renderCaseLine()}));
     ['brand','model','symptom','notes'].forEach(id=>byId(id)?.addEventListener('change',()=>{invalidate();renderCaseLine()}));
 
     drop?.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});

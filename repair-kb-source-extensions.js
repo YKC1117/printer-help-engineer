@@ -14,6 +14,10 @@
     zebra_zd421t_parts:{label:'Zebra ZD421 Thermal Transfer Spare Parts List',level:'A｜原廠零件目錄',url:'https://www.zebra.com/content/dam/zebra_dam/en/guide/portfolio/zd421-thermal-transfer-parts-catalog.pdf'},
     zebra_zt610_support:{label:'Zebra ZT610 Support / Repair Videos / Documentation',level:'A｜原廠支援',url:'https://www.zebra.com/us/en/support-downloads/printers/industrial/zt610.html'},
     zebra_zt411_support:{label:'Zebra ZT411 Support / Repair Videos / Documentation',level:'A｜原廠支援',url:'https://www.zebra.com/us/en/support-downloads/printers/industrial/zt411.html'},
-    sato_clnx_maintenance:{label:'SATO CL4NX Plus Maintenance / Consumable Parts',level:'A｜原廠維護',url:'https://www.manual.sato-global.com/printer/clnxplus/main/main_GUID-E84BA248-DE56-4EC9-9E03-1D63776B8A5B.html'}
+    sato_clnx_maintenance:{label:'SATO CL4NX Plus Maintenance / Consumable Parts',level:'A｜原廠維護',url:'https://www.manual.sato-global.com/printer/clnxplus/main/main_GUID-E84BA248-DE56-4EC9-9E03-1D63776B8A5B.html'},
+    sato_clnx_replace_head:{label:'SATO CL4NX Plus Replacing the Print Head',level:'A｜原廠維護',url:'https://www.manual.sato-global.com/printer/clnxplus/main/08mnt_st00169t_replacehead.html'},
+    sato_clnx_replace_platen:{label:'SATO CL4NX Plus Replacing the Platen Roller',level:'A｜原廠維護',url:'https://www.manual.sato-global.com/printer/clnxplus/main/08mnt_st00170t_replaceplatenroller.html'},
+    sato_clnx_system_defaults:{label:'SATO CL4NX Plus System Initial Values / Maintenance Notifications',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/main/main_GUID-00EC75DD-30A8-4185-8B94-45E8A353B7B8.html'},
+    sato_clnx_head_error:{label:'SATO CL4NX Plus Error 1012 Head Error',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/main/09trb_st00180c_error1012.html'}
   });
 })();

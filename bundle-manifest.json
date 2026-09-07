@@ -10,6 +10,7 @@
   ],
   "data": [
     "catalog.js",
+    "catalog-legacy-extensions.js",
     "flows.js",
     "engineer-data-plus.js",
     "model-cases-plus.js",
@@ -54,6 +55,7 @@
     "repair-kb-workflow-20260907.js",
     "repair-kb-internal-cases-20260907.js",
     "internal-case-library.js",
+    "repair-kb-model-corrections.js",
     "kb-integrity-check.js"
   ],
   "app": [

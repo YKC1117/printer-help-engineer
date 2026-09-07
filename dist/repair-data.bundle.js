@@ -566,6 +566,31 @@ window.addRepairKB=function(x){window.REPAIR_KB.push(x)};
 })();
 ;
 
+/* ===== SOURCE: repair-kb-source-zebra-xi4-legacy-parts.js ===== */
+'use strict';
+
+(function(){
+  if(!window.KB_SOURCES)return;
+  Object.assign(window.KB_SOURCES,{
+    zebra_140_support:{
+      label:'Zebra 140Xi4 Industrial Printer Support',
+      level:'A｜原廠舊機支援',
+      url:'https://www.zebra.com/us/en/support-downloads/printers/industrial/140xi4.html'
+    },
+    zebra_170_support:{
+      label:'Zebra 170Xi4 Industrial Printer Support',
+      level:'A｜原廠舊機支援',
+      url:'https://www.zebra.com/us/en/support-downloads/printers/industrial/170xi4.html'
+    },
+    zebra_xi4_printhead_guide:{
+      label:'Zebra Industrial Printer Printhead Accessories Guide — Xi4',
+      level:'A｜原廠零件目錄',
+      url:'https://medialibrary.zebra.com/content/dam/zebra_new_ia/en-us/solutions-verticals/product/Printers/Industrial%20Printers/GENERAL/guides/print-head-guide-en-us.pdf'
+    }
+  });
+})();
+;
+
 /* ===== SOURCE: repair-kb-pack-helper.js ===== */
 'use strict';
 
@@ -2201,6 +2226,34 @@ addRepairKB({
   add({id:'oem-zd421d-parts-pn',brand:'Zebra',models:['ZD421'],title:'【原廠料號】ZD421 Direct Thermal：Printhead、Platen、Sensor、Main Logic、Cutter',category:'原廠料號／ZD421 DT',summary:'ZD421 Direct Thermal 原廠 Spare Parts List 將 Printhead/Platen 依 DPI 分開，且 Standard/Healthcare Printhead 也不同。',keyFacts:['Printhead Standard Gray：203 dpi P1112640-019；300 dpi P1112640-020。Healthcare White：203 P1112640-026；300 P1112640-027。','Platen Roller：203 dpi P1112640-061；300 dpi P1112640-062；Platen bearings P1080383-224。','Upper Gap Sensor P1112640-009；Lower Blackline Sensor P1112640-012；Cover Open Sensor P1112640-058。','Main Logic 非 EMEA P1112640-014；downgrade-capable kit P1112640-070；EMEA P1112640-071。','Motor Assy 203/300 dpi P1080383-221；Full Cut Cutter P1112640-030；Partial Cutter upgrade P1112640-345。','Standard 60W PSU with US/Euro cords 105934-053；attached 60W PSU P1112640-057。'],engineering:['先確認 Direct Thermal，不要拿 TT 料號混用。','Healthcare white 型號 Printhead/PSU可能不同。','Main Logic 有地區/套件差異。'],verify:['DT 模式正常','Calibration 正常','品質/定位正常','Cutter/通訊正常'],flow:[['確認 DT/Healthcare/DPI','Direct Thermal、203/300、Gray/White。',['確認','不確定'],'不確定先讀銘牌。'],['定位零件','Head/Platen/Sensor/Logic/Motor/Cutter。',['已收斂','未收斂'],'先排設定/清潔。'],['核對 P/N','依 DT Parts List。',['吻合','不吻合'],'不吻合停下。'],['換後 SmartCal/長測','連印＋重開。',['通過','失敗'],'回查設定/機構。']]},['zebra_zd421d_parts','zebra_zd421','zebra_zd421_cal']);
 
   add({id:'oem-zd421t-parts-pn',brand:'Zebra',models:['ZD421'],title:'【原廠料號】ZD421 Thermal Transfer：Printhead、Platen、Ribbon Sensor、Main Logic、Cutter',category:'原廠料號／ZD421 TT',summary:'ZD421 Thermal Transfer 的 Printhead、Platen、Media/Ribbon Sensor 與 Cutter P/N 和 Direct Thermal 版本不同，先確認列印方式再採購。',keyFacts:['TT Printhead：203 dpi P1112640-218；300 dpi P1112640-219。','TT Platen：203 dpi P1112640-216；300 dpi P1112640-217；Motor Assembly P1080383-221。','Ribbon Out Sensor P1112640-204；Upper Gap Sensor P1112640-207；Lower Blackline P1112640-211；Cover Open P1112640-210。','Main Logic：非 EMEA P1112640-014；downgrade-capable P1112640-070；EMEA P1112640-071。','Full Cut Cutter Upgrade P1112640-230；Dispenser Front Bezel P1112640-231。','Standard 60W PSU 105934-053；attached 60W PSU P1112640-248。'],engineering:['不要把 ZD421D 與 ZD421T Printhead/Platen/Sensor 料號互套。','Ribbon Out 先確認碳帶裝法/列印方式再判 Sensor。','更換 Sensor 後做 SmartCal/Calibration。'],verify:['Ribbon Out 不誤報','SmartCal成功','品質/定位穩定','Cutter/Dispenser正常'],flow:[['確認 Thermal Transfer+DPI','203/300。',['確認','不確定'],'先確認耗材路徑。'],['定位零件','Head/Platen/Ribbon Sensor/Media Sensor/Logic/Cutter。',['已收斂','未收斂'],'先做校正。'],['核對 TT P/N','不可用 DT 料號。',['吻合','不吻合'],'不吻合停下。'],['換後長測','SmartCal＋連印＋選配。',['通過','失敗'],'回查線束/設定。']]},['zebra_zd421t_parts','zebra_zd421','zebra_zd421_cal']);
+})();
+;
+
+/* ===== SOURCE: repair-kb-zebra-xi4-legacy-exact-parts.js ===== */
+'use strict';
+
+(function(){
+  addRepairKB({
+    id:'oem-140xi4-printhead-pn',brand:'Zebra',models:['140Xi4'],
+    title:'【A｜原廠料號】140Xi4 Printhead 203 dpi',category:'原廠料號／Printhead',severity:'A｜原廠料號',evidence:'oem-parts',
+    summary:'Zebra 官方 Industrial Printer Printhead Accessories Guide 直接列出 140Xi4 Genuine Zebra Printhead 203 dpi 料號；下料前仍需由實機 DPI、S/N 與舊件標籤再確認。',
+    keyFacts:['140Xi4 203 dpi Genuine Zebra Printhead：P1004234。','該原廠 Guide 在 140Xi4 欄位未列 300 dpi Printhead；不要因其他 Xi4 有 300 dpi 就自行跨型號套料。','140Xi4 已停產，Zebra 官方支援頁仍保留文件/維修資源。'],
+    engineering:['固定白線先清 Printhead 並排除 Head Cable/接點、Platen 與壓力問題，不因看到 P/N 就直接換頭。','舊機採購要核對舊件標籤與是否存在後續 superseded part。','換頭後從合理 Darkness/速度重新建立品質基準。'],
+    verify:['實機 DPI 已確認 203 dpi','P1004234 與舊件/原廠資料吻合','測試圖無固定缺線','客戶實際耗材連印與條碼掃描正常'],
+    flow:[['確認完整機型與 DPI','由設定頁/銘牌確認 140Xi4、203 dpi。',['確認','不確定'],'不確定不下料。'],['排除非 Head 原因','清潔、Head Cable、Platen、壓力與固定缺線交叉。',['Head方向高','其他原因'],'其他原因先修。'],['核對原廠 P/N','140Xi4 203 dpi = P1004234。',['吻合','不吻合'],'不吻合停止採購。'],['更換後建立品質基準','合理 Darkness/速度印測試圖。',['正常','異常'],'異常回 Cable/Platen/Driver。'],['長測','客戶耗材連續列印並掃描條碼。',['通過','失敗'],'失敗不結案。']],
+    sources:['zebra_xi4_printhead_guide','zebra_140_support']
+  });
+
+  addRepairKB({
+    id:'oem-170xi4-printhead-pn',brand:'Zebra',models:['170Xi4'],
+    title:'【A｜原廠料號】170Xi4 Printhead 203 / 300 dpi',category:'原廠料號／Printhead',severity:'A｜原廠料號',evidence:'oem-parts',
+    summary:'Zebra 官方 Industrial Printer Printhead Accessories Guide 直接列出 170Xi4 203 / 300 dpi Genuine Zebra Printhead 料號，可安全作為料號核對起點。',
+    keyFacts:['170Xi4 203 dpi Genuine Zebra Printhead：P1004236。','170Xi4 300 dpi Genuine Zebra Printhead：P1004237。','同一 170Xi4 因 DPI 不同就是不同 Printhead P/N，不能只報「170Xi4 印字頭」。','Zebra 官方支援頁標示 170Xi4 已停產，替代方向為 ZT620。'],
+    engineering:['先從設定頁/實機資訊確認 203 或 300 dpi。','固定缺線先清潔並查 Head Cable、Platen 與壓力，避免誤換昂貴 Printhead。','舊機零件正式採購仍要核對 S/N、舊件標籤與最新替代料號。'],
+    verify:['DPI 與 P/N 完全對應','換頭後無固定缺線','左右濃度一致','客戶實際耗材長測穩定'],
+    flow:[['確認 DPI','分 203 / 300 dpi。',['203 dpi','300 dpi','不確定'],'不確定先查設定頁。'],['排 Head 外部因素','清潔、Cable、Platen、壓力。',['Head方向高','找到其他原因'],'其他原因先修。'],['核對料號','203=P1004236；300=P1004237。',['吻合','不吻合'],'不吻合不安裝。'],['更換與測試','依原廠程序換頭，回合理 Darkness/速度。',['正常','異常'],'異常回 Cable/Driver/機構。'],['長測與掃描','連印、冷熱機、條碼掃描。',['通過','失敗'],'通過才交機。']],
+    sources:['zebra_xi4_printhead_guide','zebra_170_support']
+  });
 })();
 ;
 

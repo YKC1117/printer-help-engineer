@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "generatedAt": "2026-09-07T05:07:44.230Z",
+  "generatedAt": "2026-09-07T05:08:15.291Z",
   "summary": {
-    "entries": 1031,
-    "sources": 101,
+    "entries": 1033,
+    "sources": 104,
     "catalogModels": 117,
     "errors": 0,
     "warnings": 0,
@@ -1130,9 +1130,9 @@
     "140Xi4": {
       "brand": "Zebra",
       "status": "已停產",
-      "total": 3,
-      "sourced": 3,
-      "aParts": 0,
+      "total": 4,
+      "sourced": 4,
+      "aParts": 1,
       "bParts": 0,
       "internal": 0,
       "sop": 0
@@ -1140,9 +1140,9 @@
     "170Xi4": {
       "brand": "Zebra",
       "status": "已停產",
-      "total": 3,
-      "sourced": 3,
-      "aParts": 0,
+      "total": 4,
+      "sourced": 4,
+      "aParts": 1,
       "bParts": 0,
       "internal": 0,
       "sop": 0
@@ -1190,10 +1190,10 @@
   },
   "sourceLevels": {
     "A｜原廠": 49,
-    "A｜原廠舊機支援": 4,
+    "A｜原廠舊機支援": 6,
     "A｜原廠舊機文件": 1,
     "B｜原廠文件鏡像": 7,
-    "A｜原廠零件目錄": 10,
+    "A｜原廠零件目錄": 11,
     "A｜原廠支援": 2,
     "A｜原廠維護": 3,
     "A｜原廠設定": 1,

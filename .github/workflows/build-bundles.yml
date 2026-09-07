@@ -7,7 +7,7 @@ on:
       - '*.js'
       - '*.css'
       - 'bundle-manifest.json'
-      - 'scripts/build-bundles.mjs'
+      - 'scripts/*.mjs'
       - '.github/workflows/build-bundles.yml'
   workflow_dispatch:
 
@@ -32,19 +32,22 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Build bundles
+      - name: Build bundles and strict data validation
         run: node scripts/build-bundles.mjs
+
+      - name: Deep KB quality audit
+        run: node scripts/quality-audit.mjs
 
       - name: Syntax check JavaScript bundles
         run: |
           node --check dist/repair-data.bundle.js
           node --check dist/engineer-app.bundle.js
 
-      - name: Commit generated bundles and index
+      - name: Commit generated bundles, reports and index
         shell: bash
         run: |
           if [ -z "$(git status --porcelain -- dist/ index.html)" ]; then
-            echo 'Bundles and index unchanged.'
+            echo 'Bundles, reports and index unchanged.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'

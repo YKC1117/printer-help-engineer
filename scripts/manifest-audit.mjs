@@ -25,10 +25,13 @@ const versionSourceExists=fs.existsSync(path.join(root,versionSource));
 const versionLiteralHits=[];
 const duplicateBuildAssignments=[];
 const runtimeVersionTargets=[...appFiles.filter(f=>f!==versionSource),'index.html'];
+const executableText=text=>text
+  .replace(/\/\*[\s\S]*?\*\//g,'')
+  .replace(/^\s*\/\/.*$/gm,'');
 for(const file of runtimeVersionTargets){
   const p=path.join(root,file);
   if(!fs.existsSync(p))continue;
-  const text=fs.readFileSync(p,'utf8');
+  const text=executableText(fs.readFileSync(p,'utf8'));
   const literals=[...new Set(text.match(/\bv\d+\.\d+(?:\.\d+)?\b/g)||[])];
   if(literals.length)versionLiteralHits.push({file,literals});
   if(/(?:window\.)?APP_BUILD\s*=/.test(text))duplicateBuildAssignments.push(file);

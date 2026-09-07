@@ -15,9 +15,9 @@
     };
   }
   function attach(){
-    if(!window.currentProduct&&typeof currentProduct==='undefined')return;
-    const p=typeof currentProduct!=='undefined'?currentProduct:window.currentProduct;
-    if(!p?.m||p.m==='未指定機型'||!window.productInfo)return;
+    if(typeof currentProduct==='undefined'||typeof productInfo==='undefined'||!productInfo)return;
+    const p=currentProduct;
+    if(!p?.m||p.m==='未指定機型')return;
     productInfo.querySelector('.kb-coverage-line')?.remove();
     const s=stats(p.m);
     const d=document.createElement('div');

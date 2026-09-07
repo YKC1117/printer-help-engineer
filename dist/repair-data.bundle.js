@@ -2794,6 +2794,7 @@ addRepairKB({
 'use strict';
 
 // 維修資料庫完整性自檢：資料量變大後避免重複 ID、錯誤來源、型號拼寫或殘缺流程悄悄混入。
+// 無來源的「通用工程基線」是刻意存在的資料類型，不再當成 Runtime Warning；來源化資料仍嚴格驗證。
 (function(){
   function runKBIntegrityCheck(){
     const list=Array.isArray(window.REPAIR_KB)?window.REPAIR_KB:[];
@@ -2827,9 +2828,11 @@ addRepairKB({
       if(!Array.isArray(x.verify)||!x.verify.length)warnings.push(`${tag} 沒有 verify`);
       if(!Array.isArray(x.flow)||!x.flow.length)warnings.push(`${tag} 沒有排查流程 flow`);
       else x.flow.forEach((step,si)=>{if(!Array.isArray(step)||step.length<3)errors.push(`${tag} flow 第 ${si+1} 步格式錯誤`);else{if(typeof step[0]!=='string'||!step[0].trim())errors.push(`${tag} flow 第 ${si+1} 步缺少標題`);if(typeof step[1]!=='string'||!step[1].trim())warnings.push(`${tag} flow 第 ${si+1} 步缺少說明`);if(!Array.isArray(step[2])||!step[2].length)warnings.push(`${tag} flow 第 ${si+1} 步沒有結果選項`);}});
+
       if(!Array.isArray(x.sources)||!x.sources.length){
+        // 只有「聲稱有來源」的 evidence 類型缺來源才是錯誤。
+        // 一般工程基線／內部案例／SOP 無公開來源屬設計允許，不製造假警告。
         if(ev==='oem-parts'||ev==='source-backed'||ev==='verified-b-parts')errors.push(`${tag} 標示為 ${ev} 但沒有來源`);
-        else if(!ev.startsWith('internal-field')&&ev!=='workflow-sop')warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
       }else for(const s of x.sources){if(!sources[s])errors.push(`${tag} 使用不存在的來源代號：${s}`);}
 
       if(ev==='oem-parts'){
@@ -2855,7 +2858,7 @@ addRepairKB({
       if(x.title&&seenTopic.has(topicKey))warnings.push(`可能重複主題：${x.title}（${(x.models||[]).join('/')}）`);else if(x.title)seenTopic.set(topicKey,pos);
     });
 
-    window.KB_HEALTH={count:list.length,sourceCount:Object.keys(sources).length,modelCount:knownModels.size,brandCount,categoryCount,evidenceCount,errors,warnings,ok:errors.length===0};
+    window.KB_HEALTH={count:list.length,sourceCount:Object.keys(sources).length,modelCount:knownModels.size,brandCount,categoryCount,evidenceCount,errors,warnings,ok:errors.length===0&&warnings.length===0};
     console.info(`[萬里維修資料庫] ${list.length} 筆｜來源 ${Object.keys(sources).length}｜型號 ${knownModels.size}｜錯誤 ${errors.length}｜警告 ${warnings.length}`);
     console.info('[萬里維修資料庫] 資料組成：',evidenceCount);
     if(warnings.length)console.warn('[萬里維修資料庫] 資料警告：',warnings);

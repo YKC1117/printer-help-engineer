@@ -1,13 +1,13 @@
 {
   "schema": 3,
-  "generatedAt": "2026-09-07T06:29:06.678Z",
-  "buildId": "1fc9a80c42b1",
+  "generatedAt": "2026-09-07T06:51:55.621Z",
+  "buildId": "691fe2ec2430",
   "sourceCounts": {
     "standalone": 1,
-    "css": 5,
+    "css": 6,
     "data": 54,
-    "app": 24,
-    "total": 84
+    "app": 25,
+    "total": 86
   },
   "kb": {
     "entries": 1043,
@@ -18,22 +18,22 @@
   },
   "bundles": {
     "repair-data.bundle.js": {
-      "sha256": "87c50c531290d56a860bbcaafd2e4fe1a466a44e53a5b26c5eb185652ea1df5d",
-      "bytes": 523604
+      "sha256": "60cfa35d3356f27ca786bf0e53adc5c1a3936799f0e5fc64f514f42ef0bb9959",
+      "bytes": 523801
     },
     "engineer-app.bundle.js": {
-      "sha256": "4222e3c239cce4edd43a356b0d912adae1046b80556e5c42c81bab39cc324467",
-      "bytes": 130927
+      "sha256": "facea055941e789ca037b8ddf2fda0e0c9158fe613982292f5ec235f5b78ab42",
+      "bytes": 144312
     },
     "engineer.bundle.css": {
-      "sha256": "c83ec7f252b0193b0456f6d37a14e5a5a2e59eab098761bb03853f786515824d",
-      "bytes": 20363
+      "sha256": "c8620bdc3691c44e92926633dad29f46212992b43173f3387e317d846a96849c",
+      "bytes": 24305
     }
   },
   "indexAssets": {
-    "guard": "asset-guard.js?v=1fc9a80c42b1",
-    "css": "dist/engineer.bundle.css?v=1fc9a80c42b1",
-    "data": "dist/repair-data.bundle.js?v=1fc9a80c42b1",
-    "app": "dist/engineer-app.bundle.js?v=1fc9a80c42b1"
+    "guard": "asset-guard.js?v=691fe2ec2430",
+    "css": "dist/engineer.bundle.css?v=691fe2ec2430",
+    "data": "dist/repair-data.bundle.js?v=691fe2ec2430",
+    "app": "dist/engineer-app.bundle.js?v=691fe2ec2430"
   }
 }

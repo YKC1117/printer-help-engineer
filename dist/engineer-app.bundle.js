@@ -7,8 +7,8 @@
 
 // 全站唯一版本來源。版本號、更新時間與時區只在此維護；其他模組一律讀取 window.APP_BUILD。
 window.APP_BUILD=Object.freeze({
-  version:'v4.3',
-  updated:'2026/09/07 15:07',
+  version:'v4.4',
+  updated:'2026/09/07 15:40',
   timezone:'Asia/Taipei',
   schema:1
 });
@@ -1260,14 +1260,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     const health=window.KB_HEALTH;
     const requiredNodes=['brand','type','series','model','symptom','modelSearch','matches','productInfo','historyBox','tab-diag','tab-kb','tab-tools','tab-catalog'];
     const missingNodes=requiredNodes.filter(id=>!document.getElementById(id));
-    const assetFailures=Array.isArray(window.__assetLoadFailures)?window.__assetLoadFailures:[];
-    const runtimeFailures=Array.isArray(window.__runtimeFailures)?window.__runtimeFailures:[];
+    const guardReady=Array.isArray(window.__assetLoadFailures)&&Array.isArray(window.__runtimeFailures);
+    const optionalIsolationReady=typeof window.__loadOptionalFeature==='function'&&Array.isArray(window.__optionalFeatureFailures);
+    const assetFailures=guardReady?window.__assetLoadFailures:[];
+    const runtimeFailures=guardReady?window.__runtimeFailures:[];
     const coreFunctions=['startCase','resetCase','showTab','copyText','saveCase','showHistory','renderTools','renderCatalog','renderKB'];
     const missingFunctions=coreFunctions.filter(name=>typeof window[name]!=='function');
 
     const checks=[
       ['核心畫面節點完整',missingNodes.length===0],
       ['核心操作函式完整',missingFunctions.length===0],
+      ['資源守門器已啟動',guardReady],
+      ['可選工具隔離機制已啟動',optionalIsolationReady],
       ['型號 catalog',products.length>20],
       ['維修資料庫',kb.length>100],
       ['所有 catalog 型號都有專屬資料',missingCoverage.length===0],
@@ -1281,8 +1285,8 @@ document.addEventListener('DOMContentLoaded',()=>{
       ['私人案例庫',Array.isArray(window.INTERNAL_CASE_LIBRARY)&&typeof window.registerSharedInternalCase==='function'],
       ['案例提交包',typeof window.prepareInternalCaseSubmission==='function'],
       ['正式 Bundle 模式',bundleMode],
-      ['資源載入無錯誤',assetFailures.length===0],
-      ['啟動期間無執行錯誤',runtimeFailures.length===0],
+      ['核心資源載入無錯誤',assetFailures.length===0],
+      ['核心啟動期間無執行錯誤',runtimeFailures.length===0],
       ['版本資訊',!!window.APP_BUILD?.version&&!!window.APP_BUILD?.updated]
     ];
     const failed=checks.filter(x=>!x[1]).map(x=>x[0]);
@@ -1296,12 +1300,14 @@ document.addEventListener('DOMContentLoaded',()=>{
       missingCoverage,
       missingNodes,
       missingFunctions,
+      guardReady,
+      optionalIsolationReady,
       assetFailures:[...assetFailures],
       runtimeFailures:[...runtimeFailures],
       bundleMode
     };
     if(!failed.length){
-      console.info(`[萬里工程師工具] Smoke Check OK｜KB ${kb.length} 筆｜型號 ${products.length}/${products.length} 覆蓋｜Bundle OK`);
+      console.info(`[萬里工程師工具] Smoke Check OK｜KB ${kb.length} 筆｜型號 ${products.length}/${products.length} 覆蓋｜Bundle OK｜Optional isolation OK`);
       return;
     }
     console.error('[萬里工程師工具] Smoke Check failed:',window.APP_SMOKE);
@@ -1313,8 +1319,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     box.textContent=`⚠️ 工程師工具啟動自檢失敗：${failed.join('、')}。請暫停使用異常功能並查看畫面上方警告。`;
     document.body.insertBefore(box,document.body.firstChild);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,160),{once:true});
-  else setTimeout(run,160);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,180),{once:true});
+  else setTimeout(run,180);
 })();
 ;
 
@@ -1711,13 +1717,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     const evidence=health.evidenceCount||{};
     const assetErrors=Array.isArray(window.__assetLoadFailures)?window.__assetLoadFailures.length:0;
     const runtimeErrors=Array.isArray(window.__runtimeFailures)?window.__runtimeFailures.length:0;
+    const optionalFailures=Array.isArray(window.__optionalFeatureFailures)?window.__optionalFeatureFailures:[];
+    const optionalStatus=window.__optionalFeatureStatus||{};
+    const optionalText=Object.keys(optionalStatus).length
+      ?Object.entries(optionalStatus).map(([name,status])=>`${name}：${status==='ready'?'正常':status==='failed'?'暫時不可用':'載入中'}`).join('｜')
+      :'尚無可選工具狀態';
     const ok=(health.errors?.length||0)===0&&smoke.ok!==false&&assetErrors===0&&runtimeErrors===0;
     const panel=document.createElement('div');panel.className='system-health-panel result '+(ok?'info':'danger');
     panel.style.marginBottom='12px';
-    panel.innerHTML=`<h3>🩺 本機系統狀態｜${ok?'正常':'需要檢查'}</h3><div class="small" style="line-height:1.8"><b>版本：</b>${esc(meta.version||'未知')}｜更新 ${esc(meta.updated||'未知')}<br><b>Bundle ID：</b>${esc(bundleId())}<br><b>維修資料：</b>${kb.length} 筆｜<b>型號：</b>${products.length}｜<b>來源：</b>${Object.keys(sources).length}<br><b>資料自檢：</b>Errors ${(health.errors||[]).length}｜Warnings ${(health.warnings||[]).length}<br><b>資料等級：</b>A 原廠料號 ${evidence['A原廠料號']||0}｜B 雙來源料號 ${evidence['B雙來源料號']||0}｜內部案例 ${evidence['內部實機案例']||0}<br><b>Runtime Smoke：</b>${smoke.ok===true?'PASS':smoke.ok===false?'FAIL':'尚未完成'}｜<b>資源錯誤：</b>${assetErrors}｜<b>執行錯誤：</b>${runtimeErrors}</div><div class="small" style="margin-top:6px">若 Pull 後版本或筆數與預期不同，先看這裡；Asset Guard / Smoke Check 有異常時畫面上方也會直接警告。</div>`;
+    panel.innerHTML=`<h3>🩺 本機系統狀態｜${ok?'正常':'需要檢查'}</h3><div class="small" style="line-height:1.8"><b>版本：</b>${esc(meta.version||'未知')}｜更新 ${esc(meta.updated||'未知')}<br><b>Bundle ID：</b>${esc(bundleId())}<br><b>維修資料：</b>${kb.length} 筆｜<b>型號：</b>${products.length}｜<b>來源：</b>${Object.keys(sources).length}<br><b>資料自檢：</b>Errors ${(health.errors||[]).length}｜Warnings ${(health.warnings||[]).length}<br><b>資料等級：</b>A 原廠料號 ${evidence['A原廠料號']||0}｜B 雙來源料號 ${evidence['B雙來源料號']||0}｜內部案例 ${evidence['內部實機案例']||0}<br><b>Runtime Smoke：</b>${smoke.ok===true?'PASS':smoke.ok===false?'FAIL':'尚未完成'}｜<b>核心資源錯誤：</b>${assetErrors}｜<b>核心執行錯誤：</b>${runtimeErrors}<br><b>可選工具：</b>${esc(optionalText)}${optionalFailures.length?`｜失敗 ${optionalFailures.length}`:''}</div><div class="small" style="margin-top:6px">可選工具採隔離載入；單一工具失敗不會影響核心排查、維修資料庫與案件紀錄。</div>`;
     box.prepend(panel);
   }
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(render,360),{once:true});
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(render,420),{once:true});
   const old=window.renderTools;
   if(typeof old==='function'){
     window.renderTools=function(){old();setTimeout(render,180)};

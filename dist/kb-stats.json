@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "entryCount": 1028,
-  "sourceCount": 95,
+  "entryCount": 1031,
+  "sourceCount": 101,
   "catalogModelCount": 117,
   "directCoveredModelCount": 117,
   "uncoveredModelCount": 0,
@@ -11,11 +11,11 @@
     "B雙來源料號": 11,
     "內部實機案例": 3,
     "工程SOP": 57,
-    "有來源資料": 818,
+    "有來源資料": 821,
     "通用工程基線": 107
   },
   "brandCount": {
-    "Zebra": 299,
+    "Zebra": 302,
     "TSC": 199,
     "Argox": 132,
     "通用": 2,
@@ -168,6 +168,9 @@
     "B級雙來源料號／Printhead／Platen": 2,
     "B級雙來源料號／Printhead／Platen／Cutter": 2,
     "B級雙來源料號／Sensor／Cutter": 1,
+    "行動式／原廠診斷": 1,
+    "行動式舊機／原廠支援": 1,
+    "行動式／Link-OS／無線": 1,
     "保養／PM／預防維護": 11,
     "拆裝後／校正／定位": 11,
     "板件更換／初始化／設定": 11,

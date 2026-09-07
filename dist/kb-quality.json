@@ -1,79 +1,21 @@
 {
   "schema": 1,
-  "generatedAt": "2026-09-07T05:05:54.116Z",
+  "generatedAt": "2026-09-07T05:06:11.380Z",
   "summary": {
-    "entries": 1028,
-    "sources": 95,
+    "entries": 1031,
+    "sources": 101,
     "catalogModels": 117,
     "errors": 0,
     "warnings": 0,
-    "advisories": 1,
+    "advisories": 0,
     "thinModels": 0,
-    "noSourcedModels": 5
+    "noSourcedModels": 0
   },
   "errors": [],
   "warnings": [],
-  "advisories": [
-    "5 個型號沒有來源化專屬文章"
-  ],
+  "advisories": [],
   "thinModels": [],
-  "noSourcedModels": [
-    {
-      "model": "ZR658",
-      "brand": "Zebra",
-      "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
-      "aParts": 0,
-      "bParts": 0,
-      "internal": 0,
-      "sop": 0
-    },
-    {
-      "model": "ZR668",
-      "brand": "Zebra",
-      "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
-      "aParts": 0,
-      "bParts": 0,
-      "internal": 0,
-      "sop": 0
-    },
-    {
-      "model": "ZQ511",
-      "brand": "Zebra",
-      "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
-      "aParts": 0,
-      "bParts": 0,
-      "internal": 0,
-      "sop": 0
-    },
-    {
-      "model": "ZQ521",
-      "brand": "Zebra",
-      "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
-      "aParts": 0,
-      "bParts": 0,
-      "internal": 0,
-      "sop": 0
-    },
-    {
-      "model": "QLn420",
-      "brand": "Zebra",
-      "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
-      "aParts": 0,
-      "bParts": 0,
-      "internal": 0,
-      "sop": 0
-    }
-  ],
+  "noSourcedModels": [],
   "modelCoverage": {
     "ZT610": {
       "brand": "Zebra",
@@ -288,8 +230,8 @@
     "ZR658": {
       "brand": "Zebra",
       "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
+      "total": 6,
+      "sourced": 1,
       "aParts": 0,
       "bParts": 0,
       "internal": 0,
@@ -298,8 +240,8 @@
     "ZR668": {
       "brand": "Zebra",
       "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
+      "total": 6,
+      "sourced": 1,
       "aParts": 0,
       "bParts": 0,
       "internal": 0,
@@ -308,8 +250,8 @@
     "ZQ511": {
       "brand": "Zebra",
       "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
+      "total": 6,
+      "sourced": 1,
       "aParts": 0,
       "bParts": 0,
       "internal": 0,
@@ -318,8 +260,8 @@
     "ZQ521": {
       "brand": "Zebra",
       "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
+      "total": 6,
+      "sourced": 1,
       "aParts": 0,
       "bParts": 0,
       "internal": 0,
@@ -328,8 +270,8 @@
     "QLn420": {
       "brand": "Zebra",
       "status": "官網產品頁",
-      "total": 5,
-      "sourced": 0,
+      "total": 6,
+      "sourced": 1,
       "aParts": 0,
       "bParts": 0,
       "internal": 0,
@@ -1247,8 +1189,8 @@
     }
   },
   "sourceLevels": {
-    "A｜原廠": 44,
-    "A｜原廠舊機支援": 3,
+    "A｜原廠": 49,
+    "A｜原廠舊機支援": 4,
     "A｜原廠舊機文件": 1,
     "B｜原廠文件鏡像": 7,
     "A｜原廠零件目錄": 10,

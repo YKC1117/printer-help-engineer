@@ -9,8 +9,14 @@
   let searchTimer=null;
   let visibleLimit=60;
   const PAGE_SIZE=60;
-
   const norm=s=>String(s||'').toLowerCase().replace(/[\s_\-–—/／()（）\[\]【】]+/g,'');
+
+  function evidenceType(a){
+    if(String(a.evidence||'').startsWith('internal-field'))return '內部實機案例';
+    if(a.evidence==='workflow-sop')return '工程 SOP';
+    if((a.sources||[]).length)return '有來源資料';
+    return '通用工程基線';
+  }
 
   function ensureIndex(){
     if(indexedLength===REPAIR_KB.length)return;
@@ -22,6 +28,7 @@
       models:(a.models||[]).join(' ').toLowerCase(),
       modelNorms:(a.models||[]).map(norm),
       evidence:(a.evidence||'').toLowerCase(),
+      evidenceType:evidenceType(a),
       sourceCount:(a.sources||[]).length,
       hay:[a.title,a.brand,a.category,a.summary,a.evidence,a.evidenceNote,...(a.models||[]),...(a.keyFacts||[]),...(a.engineering||[]),...(a.verify||[])].join(' ').toLowerCase()
     }));
@@ -32,7 +39,7 @@
     return (typeof currentProduct!=='undefined'&&currentProduct&&currentProduct.m!=='未指定機型')?currentProduct.m:'';
   }
 
-  function scoreList(q,br,cat,only,cur){
+  function scoreList(q,br,cat,ev,only,cur){
     ensureIndex();
     const tokens=q.split(/[\s,，、/／|｜]+/).map(x=>x.trim()).filter(x=>x.length>=2);
     const qn=norm(q);
@@ -59,12 +66,12 @@
         if(wantsSop&&x.evidence==='workflow-sop')score+=6;
         if(x.sourceCount)score+=1;
       }
-      // 已選機型時，即使沒有勾「只看目前機型」，同機型文章優先。
       if(cur&&x.a.models.includes(cur))score+=4;
-      return {a:x.a,score};
+      return {a:x.a,score,evidenceType:x.evidenceType};
     }).filter(x=>(!q||x.score>0)
       &&(br==='全部'||x.a.brand===br)
       &&(cat==='全部'||x.a.category===cat)
+      &&(ev==='全部'||x.evidenceType===ev)
       &&(!only||!cur||x.a.models.includes(cur)||x.a.models.includes('ALL')))
       .sort((x,y)=>y.score-x.score||x.a.title.localeCompare(y.a.title));
   }
@@ -74,8 +81,9 @@
     if(!box||$('kbSearch'))return;
     const brands=['全部',...new Set(REPAIR_KB.map(a=>a.brand))];
     const cats=['全部',...new Set(REPAIR_KB.map(a=>a.category))];
+    const evidence=['全部','內部實機案例','工程 SOP','有來源資料','通用工程基線'];
     const cur=currentModel();
-    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；精確機型、完整故障片語與實機案例會優先排序。</div></div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Cutter、1015、印一印重開…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
+    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；精確機型、完整故障片語與實機案例會優先排序。</div></div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Cutter、1015、印一印重開…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
 
     const input=$('kbSearch');
     input.addEventListener('input',()=>{
@@ -89,9 +97,7 @@
         refreshResults(true);
       }
     });
-    $('kbBrand').addEventListener('change',()=>{visibleLimit=PAGE_SIZE;refreshResults(true)});
-    $('kbCat').addEventListener('change',()=>{visibleLimit=PAGE_SIZE;refreshResults(true)});
-    $('kbModelOnly').addEventListener('change',()=>{visibleLimit=PAGE_SIZE;refreshResults(true)});
+    ['kbBrand','kbCat','kbEvidence','kbModelOnly'].forEach(id=>$(id)?.addEventListener('change',()=>{visibleLimit=PAGE_SIZE;refreshResults(true)}));
   }
 
   function refreshModelState(){
@@ -108,13 +114,14 @@
     const q=($('kbSearch')?.value||'').trim().toLowerCase();
     const br=$('kbBrand')?.value||'全部';
     const cat=$('kbCat')?.value||'全部';
+    const ev=$('kbEvidence')?.value||'全部';
     const only=!!$('kbModelOnly')?.checked;
     const cur=currentModel();
-    const scored=scoreList(q,br,cat,only,cur);
+    const scored=scoreList(q,br,cat,ev,only,cur);
     const fullList=scored.map(x=>x.a);
     const shown=fullList.slice(0,visibleLimit);
-    count.innerHTML=`找到 <b>${fullList.length}</b> 筆${q?'（依機型／片語／證據相關度排序）':''}${fullList.length>shown.length?`｜目前顯示 ${shown.length} 筆`:''}`;
-    grid.innerHTML=shown.map(kbCard).join('')||'<div class="kb-empty">找不到符合的維修資料，請縮短關鍵詞或改用故障名稱。</div>';
+    count.innerHTML=`找到 <b>${fullList.length}</b> 筆${q?'（依機型／片語／證據相關度排序）':''}${ev!=='全部'?`｜${kbEsc(ev)}`:''}${fullList.length>shown.length?`｜目前顯示 ${shown.length} 筆`:''}`;
+    grid.innerHTML=shown.map(kbCard).join('')||'<div class="kb-empty">找不到符合的維修資料，請縮短關鍵詞、改故障名稱或調整資料等級。</div>';
     grid.querySelectorAll('[data-kb]').forEach(b=>b.onclick=()=>openKBArticle(b.dataset.kb));
     if(more){
       if(fullList.length>shown.length){
@@ -133,6 +140,7 @@
     if(filters.q!==undefined&&$('kbSearch'))$('kbSearch').value=filters.q;
     if(filters.brand!==undefined&&$('kbBrand'))$('kbBrand').value=filters.brand;
     if(filters.cat!==undefined&&$('kbCat'))$('kbCat').value=filters.cat;
+    if(filters.evidence!==undefined&&$('kbEvidence'))$('kbEvidence').value=filters.evidence;
     if(filters.modelOnly!==undefined&&$('kbModelOnly')&&!$('kbModelOnly').disabled)$('kbModelOnly').checked=!!filters.modelOnly;
     refreshResults(false);
   };

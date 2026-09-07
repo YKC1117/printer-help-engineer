@@ -7,8 +7,8 @@
 
 // 全站唯一版本來源。版本號、更新時間與時區只在此維護；其他模組一律讀取 window.APP_BUILD。
 window.APP_BUILD=Object.freeze({
-  version:'v4.7',
-  updated:'2026/09/07 16:19',
+  version:'v4.8',
+  updated:'2026/09/07 16:27',
   timezone:'Asia/Taipei',
   schema:1
 });
@@ -1693,6 +1693,114 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.renderTools=render;
   try{renderTools=window.renderTools}catch(e){}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(render,0),{once:true});else setTimeout(render,0);
+})();
+;
+
+/* ===== SOURCE: engineer-command-center-zh.js ===== */
+'use strict';
+
+// Zebra 快速組合設定：中文為主、英文括號輔助。只補強介面文字，不改 ZPL 產生邏輯。
+(function(){
+  const FEATURE='Zebra 中文設定提示';
+  const byId=id=>document.getElementById(id);
+
+  const fields=[
+    ['eccZMethod','列印方式','Print Method','有碳帶 → 熱轉印；無碳帶的熱感紙 → 熱感應。'],
+    ['eccZMode','出紙模式','Print Mode','一般出紙後手撕 → 撕下；只有裝剝紙器／裁刀／回捲模組才選對應模式。'],
+    ['eccZDark','濃度 0～30','Darkness','數值越大越黑；太高可能糊字、條碼變粗。'],
+    ['eccZSpeed','速度 IPS','Speed','越快越省時；若列印變淡或不清楚就先降速。'],
+    ['eccZWidth','列印寬度 dots','Print Width','限制橫向可列印範圍；不確定可先留空。'],
+    ['eccZLength','標籤長度 dots','Label Length','限制單張走紙長度；不確定可先留空。']
+  ];
+
+  const optionText={
+    eccZMethod:{'':'不修改（No Change）','T':'熱轉印（Thermal Transfer）','D':'熱感應（Direct Thermal）'},
+    eccZMode:{'':'不修改（No Change）','T':'撕下（Tear-Off）','P':'剝離（Peel-Off）','C':'裁切（Cutter）','R':'回捲（Rewind）'}
+  };
+
+  function zebraBuilder(){
+    return [...document.querySelectorAll('#engineerCommandCenter .ecc-builder')]
+      .find(x=>x.querySelector('summary')?.textContent?.includes('Zebra｜快速組合設定'))||null;
+  }
+
+  function decorateField(id,zh,en,help){
+    const control=byId(id),label=control?.closest('label');
+    if(!control||!label)return;
+    [...label.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).forEach(n=>n.remove());
+
+    let title=label.querySelector('.ecc-field-title');
+    if(!title){
+      title=document.createElement('span');
+      title.className='ecc-field-title';
+      label.insertBefore(title,control);
+    }
+    title.innerHTML=`${zh} <span class="ecc-en">（${en}）</span>`;
+
+    let note=label.querySelector('.ecc-field-help');
+    if(!note){
+      note=document.createElement('small');
+      note.className='ecc-field-help';
+      label.appendChild(note);
+    }
+    note.textContent=help;
+  }
+
+  function localizeOptions(id){
+    const select=byId(id),map=optionText[id];
+    if(!select||!map)return;
+    [...select.options].forEach(opt=>{
+      if(Object.prototype.hasOwnProperty.call(map,opt.value))opt.textContent=map[opt.value];
+    });
+  }
+
+  function addModeReference(builder){
+    if(builder.querySelector('.ecc-mode-reference'))return;
+    const ref=document.createElement('div');
+    ref.className='ecc-mode-reference';
+    ref.innerHTML=`
+      <div class="ecc-mode-reference-title">常用模式對照</div>
+      <div class="ecc-mode-reference-grid">
+        <div><b>撕下 <span>（Tear-Off）</span></b><small>一般手撕標籤</small></div>
+        <div><b>剝離 <span>（Peel-Off）</span></b><small>有剝紙器時使用</small></div>
+        <div><b>裁切 <span>（Cutter）</span></b><small>有裁刀時使用</small></div>
+        <div><b>回捲 <span>（Rewind）</span></b><small>有回捲模組時使用</small></div>
+      </div>`;
+    const footer=builder.querySelector('.ecc-note');
+    if(footer)builder.insertBefore(ref,footer);
+    else builder.appendChild(ref);
+  }
+
+  function localizeFooter(builder){
+    const note=builder.querySelector('.ecc-note');
+    if(note)note.textContent='不同 Zebra 機型的最高速度、選配模組與舊平台行為可能不同；送出後請以機器實際反應與組態標籤（Configuration Label）再確認。';
+  }
+
+  function apply(){
+    const builder=zebraBuilder();
+    if(!builder||builder.dataset.zhHelper==='1')return;
+    localizeOptions('eccZMethod');
+    localizeOptions('eccZMode');
+    fields.forEach(x=>decorateField(...x));
+    addModeReference(builder);
+    localizeFooter(builder);
+    builder.dataset.zhHelper='1';
+  }
+
+  function safeApply(){
+    try{apply()}catch(error){console.warn(`[萬里工程師工具] ${FEATURE} 套用失敗，原功能不受影響`,error)}
+  }
+
+  function start(){
+    safeApply();
+    const root=byId('work')||document.body;
+    const observer=new MutationObserver(safeApply);
+    observer.observe(root,{childList:true,subtree:true});
+  }
+
+  try{
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+    else start();
+  }catch(error){console.warn(`[萬里工程師工具] ${FEATURE} 初始化失敗，原功能不受影響`,error)}
 })();
 ;
 

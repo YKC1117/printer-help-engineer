@@ -10,6 +10,7 @@
       generic:generic.length,
       sourced:direct.filter(x=>(x.sources||[]).length>0).length,
       oemParts:direct.filter(x=>x.evidence==='oem-parts').length,
+      bParts:direct.filter(x=>x.evidence==='verified-b-parts').length,
       internal:direct.filter(x=>String(x.evidence||'').startsWith('internal-field')).length,
       sop:direct.filter(x=>x.evidence==='workflow-sop'||/SOP/.test(x.category||'')).length
     };
@@ -27,7 +28,7 @@
       d.innerHTML=`⚠️ 此機型目前沒有專屬維修文章；可先使用通用工程基線 ${s.generic} 套。`;
     }else{
       const quality=s.sourced?`來源化 ${s.sourced}`:'來源化 0';
-      d.innerHTML=`📊 專屬資料 ${s.direct} 套｜${quality}｜原廠料號 ${s.oemParts}｜內部實機案例 ${s.internal}｜SOP ${s.sop}`;
+      d.innerHTML=`📊 專屬資料 ${s.direct} 套｜${quality}｜A原廠料號 ${s.oemParts}｜B雙來源料號 ${s.bParts}｜內部案例 ${s.internal}｜SOP ${s.sop}`;
     }
     productInfo.appendChild(d);
   }

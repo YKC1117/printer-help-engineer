@@ -40,15 +40,15 @@ jobs:
           node --check dist/repair-data.bundle.js
           node --check dist/engineer-app.bundle.js
 
-      - name: Commit generated bundles
+      - name: Commit generated bundles and index
         shell: bash
         run: |
-          if [ -z "$(git status --porcelain -- dist/)" ]; then
-            echo 'Bundles unchanged.'
+          if [ -z "$(git status --porcelain -- dist/ index.html)" ]; then
+            echo 'Bundles and index unchanged.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add dist/
+          git add dist/ index.html
           git commit -m 'chore: rebuild static bundles [skip ci]'
           git push

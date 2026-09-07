@@ -1839,7 +1839,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   function apply(){
     const center=commandCenter();
     const builder=zebraBuilder();
-    if(!center||!builder)return;
+    if(!center||!builder||center.dataset.brandUiHelper==='1')return;
     simplifyHeader(center);
     removeRedundantReference(builder);
     localizeOptions('eccZMethod');

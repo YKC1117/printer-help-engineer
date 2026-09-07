@@ -13,6 +13,7 @@
     const seenTopic=new Map();
     const brandCount={};
     const categoryCount={};
+    const evidenceCount={'內部實機案例':0,'工程SOP':0,'有來源資料':0,'通用工程基線':0};
 
     list.forEach((x,i)=>{
       const pos=i+1;
@@ -60,9 +61,19 @@
       if(!Array.isArray(x.sources)||!x.sources.length){
         warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
       }else{
-        for(const s of x.sources){
-          if(!sources[s])warnings.push(`${tag} 使用不存在的來源代號：${s}`);
-        }
+        for(const s of x.sources){if(!sources[s])warnings.push(`${tag} 使用不存在的來源代號：${s}`);}
+      }
+
+      const ev=String(x.evidence||'');
+      if(ev.startsWith('internal-field')){
+        evidenceCount['內部實機案例']++;
+        if(!x.evidenceNote)warnings.push(`${tag} 為內部實機案例但缺 evidenceNote`);
+      }else if(ev==='workflow-sop'||/SOP|保養|交機|收機|交叉測試|零件採購/.test(x.category||'')){
+        evidenceCount['工程SOP']++;
+      }else if((x.sources||[]).length){
+        evidenceCount['有來源資料']++;
+      }else{
+        evidenceCount['通用工程基線']++;
       }
 
       const topicKey=[x.brand,(x.models||[]).slice().sort().join('|'),x.title].join('::');
@@ -74,12 +85,13 @@
       count:list.length,
       sourceCount:Object.keys(sources).length,
       modelCount:knownModels.size,
-      brandCount,categoryCount,
+      brandCount,categoryCount,evidenceCount,
       errors,warnings,
       ok:errors.length===0
     };
 
     console.info(`[萬里維修資料庫] ${list.length} 筆｜來源 ${Object.keys(sources).length}｜型號 ${knownModels.size}｜錯誤 ${errors.length}｜警告 ${warnings.length}`);
+    console.info('[萬里維修資料庫] 資料組成：',evidenceCount);
     if(warnings.length)console.warn('[萬里維修資料庫] 資料警告：',warnings);
     if(errors.length){
       console.error('[萬里維修資料庫] 完整性錯誤：',errors);

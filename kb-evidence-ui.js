@@ -1,9 +1,10 @@
 'use strict';
 
-// 維修資料證據標示：工程師可一眼分辨原廠料號、內部實機、SOP、來源化資料與通用基線。
+// 維修資料證據標示：工程師可一眼分辨 A 原廠料號、B 雙來源料號、內部實機、SOP、來源化資料與通用基線。
 (function(){
   function meta(a){
-    if(a?.evidence==='oem-parts')return {label:'🏷️ 原廠料號',note:'依原廠 Parts Catalog 整理；正式下單仍需核對實機 S/N、DPI、Hardware Revision、選配及最新替代料號。'};
+    if(a?.evidence==='oem-parts')return {label:'🏷️ A｜原廠料號',note:'依原廠 Parts Catalog／Accessories Guide 整理；正式下單仍需核對實機 S/N、DPI、Hardware Revision、選配及最新替代料號。'};
+    if(a?.evidence==='verified-b-parts')return {label:'🔎 B｜雙來源料號',note:a.evidenceNote||'原廠未公開完整 Parts Catalog 時，僅收至少兩個獨立 B 級來源一致的料號；正式下料仍必須回到實機 Model、S/N、DPI、Revision、Option 再確認。'};
     if(a?.evidence==='internal-field')return {label:'🧪 內部實機案例',note:a.evidenceNote||'內部實機排查紀錄；單機數值不可當通用規格。'};
     if(a?.evidence==='internal-field-open')return {label:'🧪 內部案例｜未完全收斂',note:a.evidenceNote||'原始案例尚未確認最終根因。'};
     if(a?.evidence==='workflow-sop')return {label:'📋 工程 SOP',note:'工作流程整理；精確料號、Pin、電壓與扭力仍依該機原廠文件。'};

@@ -43,7 +43,7 @@ jobs:
       - name: Commit generated bundles
         shell: bash
         run: |
-          if git diff --quiet -- dist/; then
+          if [ -z "$(git status --porcelain -- dist/)" ]; then
             echo 'Bundles unchanged.'
             exit 0
           fi

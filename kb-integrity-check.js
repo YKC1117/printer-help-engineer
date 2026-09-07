@@ -19,6 +19,7 @@
       const pos=i+1;
       if(!x||typeof x!=='object'){errors.push(`#${pos} 不是有效物件`);return;}
       const tag=x.id||`#${pos}`;
+      const ev=String(x.evidence||'');
       if(!x.id)errors.push(`#${pos} 缺少 id`);
       else if(seenId.has(x.id))errors.push(`重複 id：${x.id}（#${seenId.get(x.id)} / #${pos}）`);
       else seenId.set(x.id,pos);
@@ -33,10 +34,10 @@
       if(!Array.isArray(x.verify)||!x.verify.length)warnings.push(`${tag} 沒有 verify`);
       if(!Array.isArray(x.flow)||!x.flow.length)warnings.push(`${tag} 沒有排查流程 flow`);
       else x.flow.forEach((step,si)=>{if(!Array.isArray(step)||step.length<3)errors.push(`${tag} flow 第 ${si+1} 步格式錯誤`);else{if(typeof step[0]!=='string'||!step[0].trim())errors.push(`${tag} flow 第 ${si+1} 步缺少標題`);if(typeof step[1]!=='string'||!step[1].trim())warnings.push(`${tag} flow 第 ${si+1} 步缺少說明`);if(!Array.isArray(step[2])||!step[2].length)warnings.push(`${tag} flow 第 ${si+1} 步沒有結果選項`);}});
-      if(!Array.isArray(x.sources)||!x.sources.length)warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
-      else for(const s of x.sources){if(!sources[s])warnings.push(`${tag} 使用不存在的來源代號：${s}`);}
+      if(!Array.isArray(x.sources)||!x.sources.length){
+        if(!ev.startsWith('internal-field')&&ev!=='workflow-sop')warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
+      }else for(const s of x.sources){if(!sources[s])warnings.push(`${tag} 使用不存在的來源代號：${s}`);}
 
-      const ev=String(x.evidence||'');
       if(ev==='oem-parts'){
         evidenceCount['原廠料號']++;
         if(!Array.isArray(x.sources)||!x.sources.length)errors.push(`${tag} 標示為原廠料號但沒有來源`);
@@ -44,6 +45,7 @@
       }else if(ev.startsWith('internal-field')){
         evidenceCount['內部實機案例']++;
         if(!x.evidenceNote)warnings.push(`${tag} 為內部實機案例但缺 evidenceNote`);
+        if(x.internalCaseId&&!String(x.id||'').includes(String(x.internalCaseId)))warnings.push(`${tag} 的 internalCaseId 與 id 對應異常`);
       }else if(ev==='workflow-sop'||/SOP|保養|交機|收機|交叉測試|零件採購/.test(x.category||''))evidenceCount['工程SOP']++;
       else if((x.sources||[]).length)evidenceCount['有來源資料']++;
       else evidenceCount['通用工程基線']++;

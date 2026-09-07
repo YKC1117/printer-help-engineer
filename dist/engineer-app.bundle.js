@@ -8,7 +8,7 @@
 // 全站唯一版本來源。版本號、更新時間與時區只在此維護；其他模組一律讀取 window.APP_BUILD。
 window.APP_BUILD=Object.freeze({
   version:'v4.0',
-  updated:'2026/09/07 13:39',
+  updated:'2026/09/07 14:01',
   timezone:'Asia/Taipei',
   schema:1
 });
@@ -139,7 +139,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 /* ===== SOURCE: case-history-plus.js ===== */
 'use strict';
 
-// 本機維修案例紀錄：本機保留完整案件；確認完修後可產生「去識別化」提交包，交由維護者加入私人 GitHub 共用案例庫。
+// 本機維修案例紀錄：本機保留完整案件；確認完修後可產生「去識別化」提交包，交由維護者加入 GitHub 共用案例庫。
 (function(){
   const el=id=>document.getElementById(id);
   function injectFields(){
@@ -147,7 +147,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     const notesField=el('notes').closest('.field');
     if(!notesField)return;
     const wrap=document.createElement('div');
-    wrap.innerHTML=`<div class="row2"><div class="field"><label for="rootCause">最終根因／故障零件 <small>可後補</small></label><input id="rootCause" placeholder="例如：Ribbon Sensor 本體異常、Platen 老化"></div><div class="field"><label for="repairAction">維修處置</label><input id="repairAction" placeholder="例如：更換 Sensor、清潔＋重新校正"></div></div><div class="row2"><div class="field"><label for="partsUsed">更換零件／料號</label><input id="partsUsed" placeholder="例如：P/N、Revision；不確定可先留空"></div><div class="field"><label for="caseVerify">完修驗證</label><select id="caseVerify"><option value="">尚未結案</option><option>已通過基本測試</option><option>已通過連續列印／冷熱機</option><option>已用客戶實際耗材驗證</option><option>暫時恢復，根因未完全確認</option></select></div></div><div class="field"><label for="sharedCaseNote">內部案例摘要／關鍵觀察 <small>確認修好後填；不要寫客戶名稱、電話、地址、完整序號</small></label><textarea id="sharedCaseNote" placeholder="例如：碳帶存在仍持續 Ribbon Out；遮擋 Sensor 讀值無變化，換正常 Sensor 後恢復。這段會用於私人 GitHub 共用案例庫。"></textarea></div>`;
+    wrap.innerHTML=`<div class="row2"><div class="field"><label for="rootCause">最終根因／故障零件 <small>可後補</small></label><input id="rootCause" placeholder="例如：Ribbon Sensor 本體異常、Platen 老化"></div><div class="field"><label for="repairAction">維修處置</label><input id="repairAction" placeholder="例如：更換 Sensor、清潔＋重新校正"></div></div><div class="row2"><div class="field"><label for="partsUsed">更換零件／料號</label><input id="partsUsed" placeholder="例如：P/N、Revision；不確定可先留空"></div><div class="field"><label for="caseVerify">完修驗證</label><select id="caseVerify"><option value="">尚未結案</option><option>已通過基本測試</option><option>已通過連續列印／冷熱機</option><option>已用客戶實際耗材驗證</option><option>暫時恢復，根因未完全確認</option></select></div></div><div class="field"><label for="sharedCaseNote">內部案例摘要／關鍵觀察 <small>確認修好後填；不要寫客戶名稱、電話、地址、完整序號</small></label><textarea id="sharedCaseNote" placeholder="例如：碳帶存在仍持續 Ribbon Out；遮擋 Sensor 讀值無變化，換正常 Sensor 後恢復。這段會用於 GitHub 共用案例庫，請只保留去識別化維修技術內容。"></textarea></div>`;
     notesField.insertAdjacentElement('afterend',wrap);
   }
 
@@ -248,14 +248,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       return;
     }
     const packet=buildSubmissionPacket(x);
-    const text='【萬里資訊｜私人 GitHub 內部案例庫提交】\n'+JSON.stringify(packet,null,2);
+    const text='【萬里資訊｜GitHub 共用案例庫提交】\n'+JSON.stringify(packet,null,2);
     copyText(text);
     x.sharePreparedAt=new Date().toLocaleString('zh-TW');
     x.shareCaseId=packet.caseId;
     try{localStorage.setItem('printer_engineer_cases',JSON.stringify(list));}catch(e){}
     showHistory();
     const box=el('caseSubmitPreview');
-    if(box)box.innerHTML=`<div style="margin-top:10px;padding:10px 12px;border:1px solid #86efac;background:#f0fdf4;border-radius:10px"><b>✅ 已產生案例提交包並複製</b><div class="small" style="margin-top:4px">案例 ID：${esc(packet.caseId)}。直接貼到 ChatGPT，我會審核格式後加入私人 GitHub 共用案例庫。</div><div class="small" style="margin-top:4px">客戶名稱、完整序號、工程師姓名與一般備註不會放進提交包。</div></div>`;
+    if(box)box.innerHTML=`<div style="margin-top:10px;padding:10px 12px;border:1px solid #86efac;background:#f0fdf4;border-radius:10px"><b>✅ 已產生案例提交包並複製</b><div class="small" style="margin-top:4px">案例 ID：${esc(packet.caseId)}。直接貼到 ChatGPT，我會審核格式與去識別化內容後加入 GitHub 共用案例庫。</div><div class="small" style="margin-top:4px">客戶名稱、完整序號、工程師姓名與一般備註不會放進提交包。</div></div>`;
     toast('案例提交包已複製，直接貼給 ChatGPT');
   };
 

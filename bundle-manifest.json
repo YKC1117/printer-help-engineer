@@ -1,4 +1,7 @@
 {
+  "standalone": [
+    "asset-guard.js"
+  ],
   "css": [
     "styles.css",
     "enhancements.css",

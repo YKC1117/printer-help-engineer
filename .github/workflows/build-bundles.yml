@@ -1,0 +1,54 @@
+name: Build static bundles
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.js'
+      - '*.css'
+      - 'bundle-manifest.json'
+      - 'scripts/build-bundles.mjs'
+      - '.github/workflows/build-bundles.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-static-bundles
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build bundles
+        run: node scripts/build-bundles.mjs
+
+      - name: Syntax check JavaScript bundles
+        run: |
+          node --check dist/repair-data.bundle.js
+          node --check dist/engineer-app.bundle.js
+
+      - name: Commit generated bundles
+        shell: bash
+        run: |
+          if git diff --quiet -- dist/; then
+            echo 'Bundles unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist/
+          git commit -m 'chore: rebuild static bundles [skip ci]'
+          git push

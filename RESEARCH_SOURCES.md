@@ -15,6 +15,20 @@
 
 已整理：Ribbon/Media Calibration、Sensor Profile、Ribbon Out、Media Out、Printhead Pressure、Toggle、走紙偏移、Cutter、Head Open、Temperature、通訊。
 
+## Zebra ZT411 / ZT421
+- https://docs.zebra.com/us/en/printers/industrial/zt411-zt421-industrial-printer-user-guide/c-zt411-zt421-industrial-printer-user-guide.html
+- https://docs.zebra.com/us/en/printers/industrial/zt411-zt421-industrial-printer-user-guide/c-zt4x1-configuration/r-zt4x1-calibrating-the-ribbon-and-media-sensors.html
+- https://docs.zebra.com/us/en/printers/industrial/zt411-zt421-industrial-printer-user-guide/c-zt4x1-configuration/r-zt4x1-adjust-the-printhead-pressure.html
+
+已整理：Sensor Profile、Manual Calibration、Printhead Pressure 起始值與左右偏移判斷、Ribbon wrinkle、Cutter 維護。
+
+## Zebra ZT231
+- https://docs.zebra.com/us/en/printers/industrial/zt231-industrial-printer-user-guide/r-zt2x0-calibrating-the-ribbon-and-media-sensors.html
+- https://docs.zebra.com/us/en/printers/industrial/zt231-industrial-printer-user-guide/c-zt4x1-troubleshoot/c-zt4x1-troubleshooting/r-zt4x1-printing-or-print-quality-issues.html
+- https://docs.zebra.com/us/en/printers/industrial/zt231-industrial-printer-user-guide/c-zt4x1-troubleshoot/c-zt4x1-troubleshooting/r-zt4x1-miscellaneous-issues.html
+
+已整理：Calibration Failed、Manual Calibration、Print Quality、Boot Lock / Logic Board 判斷。
+
 ## Zebra Xi4：110Xi4 / 140Xi4 / 170Xi4 / 220Xi4
 - https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/product/xi4-ug-en.pdf
 - https://www.zebra.com/gb/en/support-downloads/printers/industrial/110xi4.html

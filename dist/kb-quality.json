@@ -1,21 +1,59 @@
 {
-  "schema": 1,
-  "generatedAt": "2026-09-07T05:12:16.042Z",
+  "schema": 2,
+  "generatedAt": "2026-09-07T05:12:40.604Z",
   "summary": {
     "entries": 1039,
     "sources": 104,
     "catalogModels": 117,
     "errors": 0,
     "warnings": 0,
-    "advisories": 0,
+    "advisories": 1,
     "thinModels": 0,
-    "noSourcedModels": 0
+    "noSourcedModels": 0,
+    "shallowSourcedModels": 3
   },
   "errors": [],
   "warnings": [],
-  "advisories": [],
+  "advisories": [
+    "3 個型號來源化專屬文章少於 3 篇"
+  ],
   "thinModels": [],
   "noSourcedModels": [],
+  "shallowSourcedModels": [
+    {
+      "model": "Alpha-3R",
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 18,
+      "sourced": 1,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    {
+      "model": "DA210",
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 19,
+      "sourced": 1,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    {
+      "model": "DA220",
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 19,
+      "sourced": 1,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    }
+  ],
   "modelCoverage": {
     "ZT610": {
       "brand": "Zebra",

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-09-07T04:53:56.091Z",
+  "sourceCounts": {
+    "css": 4,
+    "data": 46,
+    "app": 20,
+    "total": 70
+  },
+  "bundles": {
+    "repair-data.bundle.js": {
+      "sha256": "48aca5d2c4be5eb42e6ca4c69161dbcb0c5f6416d5996963fed9bbcf52655d2e",
+      "bytes": 489728
+    },
+    "engineer-app.bundle.js": {
+      "sha256": "e5fec125f000f4c4622c75f4255af0beeae9c3b0d55b6586d420df151915c497",
+      "bytes": 107853
+    },
+    "engineer.bundle.css": {
+      "sha256": "116267dd51bcd5d304d98d63b31f73aaf7415b6f96fdf2dc79fc007303ac6649",
+      "bytes": 15767
+    }
+  }
+}

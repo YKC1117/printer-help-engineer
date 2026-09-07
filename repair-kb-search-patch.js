@@ -12,7 +12,8 @@
   const norm=s=>String(s||'').toLowerCase().replace(/[\s_\-–—/／()（）\[\]【】]+/g,'');
 
   function evidenceType(a){
-    if(a.evidence==='oem-parts')return '原廠料號';
+    if(a.evidence==='oem-parts')return 'A｜原廠料號';
+    if(a.evidence==='verified-b-parts')return 'B｜雙來源料號';
     if(String(a.evidence||'').startsWith('internal-field'))return '內部實機案例';
     if(a.evidence==='workflow-sop')return '工程 SOP';
     if((a.sources||[]).length)return '有來源資料';
@@ -66,7 +67,8 @@
         }
         if(wantsCase&&x.evidence.startsWith('internal-field'))score+=8;
         if(wantsSop&&x.evidence==='workflow-sop')score+=6;
-        if(wantsParts&&x.evidence==='oem-parts')score+=10;
+        if(wantsParts&&x.evidence==='oem-parts')score+=12;
+        if(wantsParts&&x.evidence==='verified-b-parts')score+=9;
         if(x.sourceCount)score+=1;
       }
       if(cur&&x.a.models.includes(cur))score+=4;
@@ -84,11 +86,11 @@
     if(!box||$('kbSearch'))return;
     const brands=['全部',...new Set(REPAIR_KB.map(a=>a.brand))];
     const cats=['全部',...new Set(REPAIR_KB.map(a=>a.category))];
-    const evidence=['全部','原廠料號','內部實機案例','工程 SOP','有來源資料','通用工程基線'];
+    const evidence=['全部','A｜原廠料號','B｜雙來源料號','內部實機案例','工程 SOP','有來源資料','通用工程基線'];
     const cur=currentModel();
     const ec=window.KB_HEALTH?.evidenceCount||{};
-    const composition=Object.keys(ec).length?`原廠料號 ${ec['原廠料號']||0}｜內部實機案例 ${ec['內部實機案例']||0}｜工程 SOP ${ec['工程SOP']||0}｜有來源資料 ${ec['有來源資料']||0}｜通用基線 ${ec['通用工程基線']||0}`:'';
-    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；原廠料號、精確機型、完整故障片語與實機案例會優先排序。</div>${composition?`<div class="small" style="margin-top:5px;font-weight:800">資料組成：${kbEsc(composition)}</div>`:''}</div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Printhead 料號、1015、印一印重開…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
+    const composition=Object.keys(ec).length?`A原廠料號 ${ec['A原廠料號']||ec['原廠料號']||0}｜B雙來源料號 ${ec['B雙來源料號']||0}｜內部實機案例 ${ec['內部實機案例']||0}｜工程 SOP ${ec['工程SOP']||0}｜有來源資料 ${ec['有來源資料']||0}｜通用基線 ${ec['通用工程基線']||0}`:'';
+    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。精確料號分為 A 原廠與 B 雙來源；搜尋時 A 級優先，B 級仍需下料前實機核對。</div>${composition?`<div class="small" style="margin-top:5px;font-weight:800">資料組成：${kbEsc(composition)}</div>`:''}</div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Printhead 料號、MH241 Platen、1015…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbEvidence" title="資料等級">${evidence.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
 
     const input=$('kbSearch');
     input.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{visibleLimit=PAGE_SIZE;refreshResults(true)},180)});

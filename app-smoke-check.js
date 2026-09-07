@@ -1,6 +1,6 @@
 'use strict';
 
-// 執行層煙霧測試：Asset Guard 抓「檔案沒載到」；這裡抓「檔案有載，但核心資料／功能／Bundle 狀態不完整」。
+// 執行層煙霧測試：Asset Guard 抓「檔案沒載到／執行中拋錯」；這裡抓核心資料、畫面節點與功能是否完整。
 (function(){
   function run(){
     const kb=Array.isArray(window.REPAIR_KB)?window.REPAIR_KB:[];
@@ -12,8 +12,16 @@
     const scripts=[...document.scripts].map(s=>s.src||'');
     const bundleMode=scripts.some(x=>x.includes('/dist/repair-data.bundle.js'))&&scripts.some(x=>x.includes('/dist/engineer-app.bundle.js'));
     const health=window.KB_HEALTH;
+    const requiredNodes=['brand','type','series','model','symptom','modelSearch','matches','productInfo','historyBox','tab-diag','tab-kb','tab-tools','tab-catalog'];
+    const missingNodes=requiredNodes.filter(id=>!document.getElementById(id));
+    const assetFailures=Array.isArray(window.__assetLoadFailures)?window.__assetLoadFailures:[];
+    const runtimeFailures=Array.isArray(window.__runtimeFailures)?window.__runtimeFailures:[];
+    const coreFunctions=['startCase','resetCase','showTab','copyText','saveCase','showHistory','renderTools','renderCatalog','renderKB'];
+    const missingFunctions=coreFunctions.filter(name=>typeof window[name]!=='function');
 
     const checks=[
+      ['核心畫面節點完整',missingNodes.length===0],
+      ['核心操作函式完整',missingFunctions.length===0],
       ['型號 catalog',products.length>20],
       ['維修資料庫',kb.length>100],
       ['所有 catalog 型號都有專屬資料',missingCoverage.length===0],
@@ -27,6 +35,8 @@
       ['私人案例庫',Array.isArray(window.INTERNAL_CASE_LIBRARY)&&typeof window.registerSharedInternalCase==='function'],
       ['案例提交包',typeof window.prepareInternalCaseSubmission==='function'],
       ['正式 Bundle 模式',bundleMode],
+      ['資源載入無錯誤',assetFailures.length===0],
+      ['啟動期間無執行錯誤',runtimeFailures.length===0],
       ['版本資訊',!!window.APP_BUILD?.version&&!!window.APP_BUILD?.updated]
     ];
     const failed=checks.filter(x=>!x[1]).map(x=>x[0]);
@@ -38,6 +48,10 @@
       modelCount:products.length,
       invalidModels,
       missingCoverage,
+      missingNodes,
+      missingFunctions,
+      assetFailures:[...assetFailures],
+      runtimeFailures:[...runtimeFailures],
       bundleMode
     };
     if(!failed.length){
@@ -50,9 +64,9 @@
     box.id='appSmokeAlert';
     box.setAttribute('role','alert');
     box.style.cssText='max-width:1240px;margin:10px auto;padding:10px 14px;border:1px solid #ef4444;border-radius:10px;background:#fef2f2;color:#991b1b;font-size:12px;font-weight:800';
-    box.textContent=`⚠️ 工程師工具啟動自檢失敗：${failed.join('、')}。請暫停使用異常功能並查看 Console。`;
+    box.textContent=`⚠️ 工程師工具啟動自檢失敗：${failed.join('、')}。請暫停使用異常功能並查看畫面上方警告。`;
     document.body.insertBefore(box,document.body.firstChild);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,120),{once:true});
-  else setTimeout(run,120);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(run,160),{once:true});
+  else setTimeout(run,160);
 })();

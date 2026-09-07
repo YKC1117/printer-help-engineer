@@ -5,6 +5,7 @@
   "css": [
     "styles.css",
     "enhancements.css",
+    "engineer-tools-plus.css",
     "repair-kb.css",
     "customer-phrase-search.css"
   ],
@@ -86,6 +87,7 @@
     "workflow-phrase-rules.js",
     "customer-phrase-clear.js",
     "app-smoke-check.js",
+    "engineer-tools-plus.js",
     "system-health-panel.js",
     "build-meta.js"
   ]

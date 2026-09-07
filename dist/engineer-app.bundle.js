@@ -8,7 +8,7 @@
 // 全站唯一版本來源。版本號、更新時間與時區只在此維護；其他模組一律讀取 window.APP_BUILD。
 window.APP_BUILD=Object.freeze({
   version:'v4.0',
-  updated:'2026/09/07 13:24',
+  updated:'2026/09/07 13:39',
   timezone:'Asia/Taipei',
   schema:1
 });
@@ -1348,7 +1348,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const version=meta.version||'版本未載入';
   const updated=meta.updated||'未知時間';
   const stat=document.getElementById('headerStat');
-  if(stat) stat.textContent=`${version}｜更新 ${updated}`;
+  if(stat) stat.textContent=version;
   document.title=`萬里資訊｜工程師標籤機故障排查工具 ${version}｜更新 ${updated}`;
   const footer=document.querySelector('footer');
   if(footer && !footer.querySelector('.build-meta-line')){

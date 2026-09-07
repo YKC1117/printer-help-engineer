@@ -32,6 +32,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Audit bundle manifest
+        run: node scripts/manifest-audit.mjs
+
       - name: Build bundles and strict data validation
         run: node scripts/build-bundles.mjs
 

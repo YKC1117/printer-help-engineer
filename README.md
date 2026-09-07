@@ -4,7 +4,7 @@
 
 此專案包含進階診斷、Sensor／線路／量測、零件料號、拆裝、錯誤碼與內部維修案例。**不得把工程師內容同步到 `printer-help-customer` 公開客戶版。**
 
-## v3.3 核心方向
+## v4.0 核心方向
 
 工程師版以「找到根因、完成修復、留下可重用經驗」為目標：
 
@@ -13,9 +13,20 @@
 - Sensor、Printhead、Platen、Cutter、Motor、PSU、Mainboard、線束等硬體排查。
 - A／B 級精確料號分級。
 - 萬里內部實機案例與完修案例庫。
-- 本機案件紀錄、根因、處置、零件與完修驗證。
+- 本機案件紀錄、JSON 備份／還原、根因、處置、零件與完修驗證。
 - 大型資料庫分批渲染、完整索引搜尋。
-- GitHub Actions 自動 Bundle、語法檢查、資料完整性檢查與 cache busting。
+- 工程師工具內可直接查看本機版本、Bundle ID、資料筆數與自檢狀態。
+- GitHub Actions 自動 Bundle、Manifest Audit、語法檢查、資料完整性／深度檢查與 cache busting。
+
+## 版本管理
+
+`app-version.js` 是**全站唯一版本來源**：
+
+- `version`：正式版本號。
+- `updated`：台灣時間最後更新。
+- `timezone`：固定 `Asia/Taipei`。
+
+其他 JS、`index.html`、頁首／頁尾與系統健康面板都只能讀取 `window.APP_BUILD`，不得自行硬編版本號。版本升級時只修改 `app-version.js`。
 
 ## 正式執行架構
 
@@ -24,24 +35,27 @@
 `bundle-manifest.json` 定義正式來源順序，GitHub Actions 自動產生：
 
 - `dist/repair-data.bundle.js`：型號、來源、維修知識、案例與資料自檢。
-- `dist/engineer-app.bundle.js`：搜尋、介面、案件紀錄、案例提交與 Smoke Check。
+- `dist/engineer-app.bundle.js`：版本、搜尋、介面、案件紀錄、案例提交、系統健康與 Smoke Check。
 - `dist/engineer.bundle.css`：正式樣式。
-- `dist/bundle-meta.json`：Bundle hash、大小與來源數。
+- `dist/bundle-meta.json`：Bundle hash、大小、來源數與資料庫摘要。
+- `dist/manifest-audit.json`：正式資產是否全部受 Bundle Manifest 管理。
 - `dist/kb-stats.json`：資料庫精確筆數、來源數、型號覆蓋、A/B 料號與驗證結果。
+- `dist/kb-quality.json`：深度品質稽核、薄弱機型、來源化覆蓋與 advisory。
 
-`index.html` 由建置程序自動維護正式 Bundle 連結與 content hash。**不要手動把原始 60+ 支 JS 再加回 `index.html`。**
+`index.html` 由建置程序自動維護正式 Bundle 連結與 content hash。**不要手動把原始多支 JS 再加回 `index.html`。**
 
 ### 修改資料後
 
 正常流程只修改原始 `.js/.css` → Push 到 `main` → GitHub Actions：
 
-1. 檢查 manifest 是否缺檔／重複。
+1. 檢查 manifest 是否漏載、缺檔、重複或分組錯誤。
 2. 建立 Bundle。
-3. `node --check` 驗證兩支 JS Bundle 語法。
-4. 執行維修資料 Bundle，驗證 ID、來源、型號、flow、A/B 料號規則。
-5. 產生 `kb-stats.json`。
-6. 依內容產生新的 cache hash。
-7. 自動更新 `index.html` 並 commit `dist/`。
+3. 執行嚴格維修資料驗證。
+4. 執行深度 KB 品質稽核。
+5. `node --check` 驗證兩支 JS Bundle 語法。
+6. 產生 `kb-stats.json`、`kb-quality.json`、`bundle-meta.json`。
+7. 依正式資產內容產生新的 cache hash。
+8. 自動更新 `index.html` 並 commit `dist/`。
 
 工程師電腦只需 GitHub Desktop **Pull** 後開本機 `index.html`。
 
@@ -77,7 +91,9 @@
 
 ## 私人 GitHub 內部案例庫
 
-完修案件先存在工程師本機瀏覽器。只有填完整：
+完修案件先存在工程師本機瀏覽器。案件紀錄可匯出 JSON 備份，換電腦或瀏覽器資料遺失時再匯回。
+
+只有填完整：
 
 - 最終根因／故障零件
 - 維修處置
@@ -90,8 +106,11 @@
 
 ## 常用維護檔案
 
+- `app-version.js`：**唯一正式版本來源**。
 - `bundle-manifest.json`：正式來源載入順序。
+- `scripts/manifest-audit.mjs`：Bundle Manifest／版本集中管理檢查。
 - `scripts/build-bundles.mjs`：Bundle + 資料驗證 + 統計產生器。
+- `scripts/quality-audit.mjs`：資料深度與來源化覆蓋稽核。
 - `.github/workflows/build-bundles.yml`：自動建置。
 - `catalog.js` / `catalog-legacy-extensions.js`：型號 catalog。
 - `repair-kb-core.js` + source extension：資料來源索引。
@@ -99,6 +118,7 @@
 - `internal-case-library.js`：確認後的共用內部案例。
 - `kb-integrity-check.js`：瀏覽器執行時資料自檢。
 - `app-smoke-check.js`：介面／核心功能啟動檢查。
+- `system-health-panel.js`：本機載入狀態、版本與 Bundle 健康資訊。
 - `RESEARCH_SOURCES.md`：來源紀錄。
 - `dist/kb-stats.json`：**目前資料庫狀態的機器產生 source of truth**。
 

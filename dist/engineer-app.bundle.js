@@ -139,7 +139,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 /* ===== SOURCE: case-history-plus.js ===== */
 'use strict';
 
-// 本機維修案例紀錄 v3：本機保留完整案件；確認完修後可產生「去識別化」提交包，交由維護者加入私人 GitHub 共用案例庫。
+// 本機維修案例紀錄：本機保留完整案件；確認完修後可產生「去識別化」提交包，交由維護者加入私人 GitHub 共用案例庫。
 (function(){
   const el=id=>document.getElementById(id);
   function injectFields(){
@@ -235,7 +235,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       verify:x.verify||'',
       sharedNote:x.sharedNote||'',
       evidence:answers,
-      sourceBuild:window.APP_BUILD?`${APP_BUILD.version} ${APP_BUILD.updated}`:'v3.3',
+      sourceBuild:window.APP_BUILD?`${APP_BUILD.version} ${APP_BUILD.updated}`:'版本未載入',
       privacy:'已自動排除 customer / serial / engineer / notes；共享摘要請勿含客戶識別資料'
     };
   }
@@ -507,7 +507,6 @@ window.focusUnanswered=focusUnanswered;window.showAllSteps=showAllSteps;
 
 document.addEventListener('DOMContentLoaded',()=>{
   injectQuickPanel();
-  const stat=$('headerStat');if(stat)stat.textContent=`v3.1｜${typeof PRODUCTS!=='undefined'?PRODUCTS.length:0} 型號｜${typeof GENERIC!=='undefined'?Object.keys(GENERIC).length:0} 故障流程`;
   if(search){search.placeholder='例如：ZT610、110Xi4、220Xi4、TH240、P4-650';}
 });
 ;

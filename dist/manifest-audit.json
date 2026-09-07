@@ -1,10 +1,17 @@
 {
-  "schema": 1,
+  "schema": 2,
   "rootAssets": 82,
   "tracked": 82,
   "untracked": [],
   "missing": [],
   "duplicates": [],
   "wrongGroup": [],
+  "version": {
+    "source": "app-version.js",
+    "sourceExists": true,
+    "firstInAppBundle": true,
+    "literalHits": [],
+    "duplicateAssignments": []
+  },
   "ok": true
 }

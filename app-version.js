@@ -2,8 +2,8 @@
 
 // 全站唯一版本來源。版本號、更新時間與時區只在此維護；其他模組一律讀取 window.APP_BUILD。
 window.APP_BUILD=Object.freeze({
-  version:'v4.9',
-  updated:'2026/09/07 16:31',
+  version:'v4.10',
+  updated:'2026/09/07 16:30',
   timezone:'Asia/Taipei',
   schema:1
 });

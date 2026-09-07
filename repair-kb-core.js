@@ -3,6 +3,8 @@
 window.KB_SOURCES={
   zebra_zt600:{label:'Zebra ZT610/ZT620 User Guide',level:'A｜原廠',url:'https://docs.zebra.com/us/en/printers/industrial/zt610-zt620-industrial-printer-with-color-touch-display-user-guide.html'},
   zebra_zt600_tw:{label:'Zebra ZT610/ZT620 使用者指南（繁中）',level:'A｜原廠',url:'https://docs.zebra.com/tw/tw/printers/industrial/zt610-zt620-industrial-printer-with-color-touch-di/-zt610-zt620-.html'},
+  zebra_zt400:{label:'Zebra ZT411/ZT421 Industrial Printer User Guide',level:'A｜原廠',url:'https://docs.zebra.com/us/en/printers/industrial/zt411-zt421-industrial-printer-user-guide/c-zt411-zt421-industrial-printer-user-guide.html'},
+  zebra_zt231:{label:'Zebra ZT231 Industrial Printer User Guide',level:'A｜原廠',url:'https://docs.zebra.com/us/en/printers/industrial/zt231-industrial-printer-user-guide.html'},
   zebra_jg:{label:'Zebra ZPL ~JG Sensor Profile',level:'A｜原廠',url:'https://docs.zebra.com/content/tcm/us/en/printers/software/zpl-pg/zpl-commands/~jg.html'},
   zebra_cal:{label:'Zebra ZPL Calibration / Media Feed Commands',level:'A｜原廠',url:'https://docs.zebra.com/content/tcm/us/en/printers/software/zpl-pg/advanced-techniques/calibration-and-media-feed-commands.html'},
   zebra_xi4:{label:'Zebra Xi4/RXi4 User Guide',level:'A｜原廠舊機文件',url:'https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/product/xi4-ug-en.pdf'},

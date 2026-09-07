@@ -1,0 +1,85 @@
+'use strict';
+
+// Service-level 第二批：高價零件、模組與主板判斷前的交叉驗證。
+[
+{
+ id:'svc-zebra-zt600-printhead',brand:'Zebra',models:['ZT610','ZT620'],category:'Service｜Printhead／換件',severity:'高價值',
+ title:'ZT610/ZT620｜Printhead 換件前檢查：壞點、Head Cable、Platen、壓力',sources:['zebra_zt600','zebra_zt600_tw'],
+ summary:'ZT600 出現固定白線、固定缺點、單側淡時，不直接換 Printhead。先用內建測試、清潔、Platen、壓力與 Head Cable 把機械/接觸問題排除。',
+ keyFacts:['固定同位置缺線比隨機淡更支持 Head element/Cable。','單側淡先看壓力與 Platen 平整度。','換頭前斷電並檢查 Head Cable 接點，避免接觸不良或驅動問題傷新頭。'],
+ engineering:['若可取得正常 Printhead，交叉測試是最直接的分界。','更換後以同一測試圖、同一 Darkness/Speed 驗證。','若新頭仍同位置缺線，立即停止反覆換頭，轉查 Cable/Driver。'],
+ verify:['整寬測試圖完整','100 張無固定缺線','左右濃度一致','條碼可穩定掃描'],
+ flow:[['印內建測試圖','排除 BarTender/Driver 內容問題。',['固定缺線','單側淡','其他'],'分流。'],['清潔 Head/Platen','依原廠清潔。',['恢復','仍異常'],'再看機構。'],['檢查壓力/Platen','單側壓力、滾輪凹痕/硬化。',['機構異常','正常'],'機構先修。'],['斷電檢查 Head Cable','接點、折傷、固定。',['Cable異常','正常'],'換件前必要。'],['交叉/更換 Printhead','正常件驗證。',['Head故障','仍異常'],'仍異常查 Driver/Main Logic。']]},
+{
+ id:'svc-zebra-zt600-platen',brand:'Zebra',models:['ZT610','ZT620'],category:'Service｜Platen／機構',severity:'高頻',
+ title:'ZT610/ZT620｜Platen Roller 老化、凹痕、殘膠：何時該換滾輪',sources:['zebra_zt600'],
+ summary:'Platen 的凹痕、硬化、殘膠、局部打滑會造成淡印、皺碳、走紙偏、定位不穩。清潔後仍有實體損傷或同位置接觸問題時才進換件。',
+ keyFacts:['Platen 問題常同時影響列印品質與走紙。','用過高壓力補 Platen 老化只會增加 Head 磨耗。','換 Platen 後需重新檢查壓力、定位與 Calibration。'],
+ engineering:['斷電後慢轉 Platen 看整圈表面。','若表面發亮硬化、凹洞或膠無法清除，換件價值高。','換件前確認不是 Media Guide 過緊或 Head pressure 不平衡。'],
+ verify:['走紙不打滑','左右濃度一致','100 張定位穩定','無皺碳'],
+ flow:[['清潔並目視整圈','看膠、凹痕、切傷、硬化。',['正常','可清潔污染','實體損傷'],'實體損傷進換件。'],['慢速走紙觀察','看打滑、偏移、週期性缺陷。',['正常','週期性異常'],'週期性常對應滾輪。'],['確認壓力/導紙','避免誤判。',['正常','已修正'],'修正後重測。'],['更換 Platen','依維修規範拆裝。',['完成','不適用'],'不要污染新滾輪。'],['重新校正/品質測試','Calibration + 測試圖。',['正常','仍異常'],'仍異常查 Head/Drive。']]},
+{
+ id:'svc-zebra-zt600-power-isolation',brand:'Zebra',models:['ZT610','ZT620'],category:'Service｜PSU／主板隔離',severity:'高',
+ title:'ZT610/ZT620｜完全不開機：PSU、外接模組、Main Logic 隔離順序',sources:['zebra_zt600'],
+ summary:'完全無電先確認 AC 前端與 PSU，再逐步隔離 Cutter/Peel/Rewind/I-O 等可拆負載；PSU 空載/最小配置正常而一接特定模組掉電時，不應先換 Main Logic。',
+ keyFacts:['部分 LED/風扇有動作代表不是「完全無電」。','短路負載可把健康 PSU 拉低。','精確 DC Rail 與 Connector Pin 僅依 Service Manual。'],
+ engineering:['斷電拆接模組。','用最小配置建立可開機基準。','PSU 與所有負載正常仍無初始化，才查 Main Logic/Panel。'],
+ verify:['冷開機 5 次','逐一接回模組仍正常','30 分鐘連印不重啟','無異常發熱'],
+ flow:[['確認 AC/開關','插座、電源線、主開關。',['正常','異常'],'先修前端。'],['辨識完全無電/部分上電','LED、風扇、網路燈、初始化。',['完全無電','部分上電'],'部分上電轉控制路徑。'],['確認 PSU','依手冊測試。',['正常','異常'],'異常先 PSU。'],['隔離 Option 模組','Cutter/Peel/Rewind/I-O 逐一隔離。',['找到拉低負載','仍無法開機'],'找到就查該支路。'],['Main Logic/Panel 收斂','最小配置仍失敗。',['主板方向高','Panel/線束方向高'],'記錄測點。']]},
+{
+ id:'svc-zebra-zt400-pressure',brand:'Zebra',models:['ZT411','ZT421'],category:'Service｜壓力／皺碳',severity:'高頻',
+ title:'ZT411/ZT421｜左右濃度不均、皺碳、走紙偏：壓力平衡判斷',sources:['zebra_zt400'],
+ summary:'ZT400 系列遇到單側淡、Ribbon wrinkle、Media drift，應依原廠壓力調整邏輯逐步平衡左右壓力，使用能得到良好品質的最低壓力。',
+ keyFacts:['左側淡與右側淡的調整方向不同。','壓力過高不是長期解法，會增加 Head/Platen 磨耗。','皺碳與紙偏一起出現時，需同步檢查耗材路徑與 Platen 平行。'],
+ engineering:['先固定速度/濃度與同一耗材，再改壓力。','每次只調一側、一小步並記錄。','壓力調不平且有週期缺陷時查 Platen/Head alignment。'],
+ verify:['左右濃度一致','100 張不皺碳','Media 不漂移','條碼掃描穩定'],
+ flow:[['固定基準','同一耗材/速度/Darkness。',['完成','無法固定'],'先建立基準。'],['判斷哪側淡/哪側偏','左/右/兩側。',['左側','右側','平均'],'分流。'],['依原廠壓力邏輯微調','一次一小步。',['改善','無改善'],'記錄位置。'],['檢查 Platen/走紙路徑','仍皺/偏時。',['機構異常','正常'],'機構先修。'],['最終驗證','低/高速度測試。',['正常','仍異常'],'再查 Head alignment。']]},
+{
+ id:'svc-tsc-th240-tph',brand:'TSC',models:['TH240','TH340'],category:'Service｜Printhead／壞點',severity:'高頻',
+ title:'TH240/TH340｜固定白線、Printhead 壞點與換頭前驗證',sources:['tsc_th240'],
+ summary:'TH 系列固定同位置白線先清 Head/Platen、印固定測試圖；若清潔後仍同位置且 Cable/Platen 正常，再提高 Printhead 壞點嫌疑。',
+ keyFacts:['固定位置缺線比整體淡更像壞點。','桌上型 Platen 小，殘膠/凹傷很容易造成局部接觸異常。','換 Head 前必查 Cable/接頭。'],
+ engineering:['斷電拆 Head。','新 Head 上機前確認 Driver/供電無異常。','更換後不要直接沿用過高 Darkness。'],
+ verify:['測試圖無白線','100 張品質穩定','條碼可掃','Head 不異常過熱'],
+ flow:[['印固定測試圖','確認缺陷位置是否固定。',['固定','不固定'],'不固定走品質流程。'],['清潔 Head/Platen','IPA/原廠建議方式。',['恢復','仍固定'],'再拆。'],['檢查 Platen/Cable','凹痕、接點。',['異常','正常'],'異常先處理。'],['交叉/更換 Head','有正常件優先交叉。',['Head故障','仍異常'],'仍異常查 Driver。'],['恢復設定與驗證','用合理 Darkness/Speed。',['正常','仍異常'],'停止反覆換頭。']]},
+{
+ id:'svc-tsc-mh241-media-ribbon',brand:'TSC',models:['MH241','MH341','MH641'],category:'Service｜Media/Ribbon Sensor',severity:'高',
+ title:'MH241/MH341/MH641｜Media/Ribbon Sensor：校正、固定讀值與線束收斂',sources:['tsc_mh241','tsc_mh_product'],
+ summary:'MH241 系列有完整 Sensor/工具診斷能力；當 Paper/Ribbon Out 在已知正常耗材、正確設定與校正後仍誤報，才進 Sensor、線束與主板輸入。',
+ keyFacts:['先分 Media Sensor 與 Ribbon Sensor。','可用 TSC 工具觀察狀態，先記錄再改設定。','固定讀值/完全不變比一次校正失敗更支持硬體。'],
+ engineering:['斷電檢查接頭。','已知正常耗材交叉。','精確電壓/ADC 依 Service Manual。'],
+ verify:['50 張無誤報','FEED 一次一張','Ribbon End 可正確偵測','重開正常'],
+ flow:[['確認 Print Method/Media Type','設定與實物一致。',['正確','已修正'],'先排設定。'],['校正 Media/Ribbon','依原廠流程。',['成功','失敗'],'失敗記錄。'],['觀察 Sensor 狀態','有/無耗材時變化。',['正常變化','固定/異常'],'固定進硬體。'],['斷電查 Sensor/線束','接點、污染、折傷。',['異常已修','正常'],'再交叉。'],['正常 Sensor 交叉','必要時。',['Sensor故障','主板輸入方向高','已修復'],'主板最後。']]},
+{
+ id:'svc-argox-p4-head-platen',brand:'Argox',models:['P4-250','P4-350','P4-650'],category:'Service｜Head／Platen',severity:'高頻',
+ title:'Argox P4｜固定白線、單側淡、Platen 與 Printhead 換件前判斷',sources:['argox_p4','argox_p4_product'],
+ summary:'P4 系列品質異常先固定耗材/速度/熱量，再分固定缺線、單側淡、整體淡。固定缺線走 Head/Cable，單側淡走 Platen/壓力/Head seating。',
+ keyFacts:['P4-650 高 dpi 對 Platen 平整與耗材匹配更敏感。','過高 Darkness 可能破碳，不應拿來掩蓋接觸問題。','固定白線換 Head 前先檢查 Cable 與 Platen。'],
+ engineering:['斷電拆 Head。','清潔後用固定測試圖比較。','新 Head 上機後回到合理基準，不直接保留高熱量。'],
+ verify:['無固定缺線','左右濃度一致','白碳帶/一般碳帶均不皺','100 張穩定'],
+ flow:[['固定測試條件','同耗材/速度/Darkness。',['完成','無法'],'先基準。'],['判斷缺陷型態','固定白線/單側淡/整體淡。',['固定白線','單側淡','整體淡'],'分流。'],['清 Head/Platen','清潔與目視。',['恢復','Platen異常','仍異常'],'Platen先修。'],['檢查 Head Cable/安裝','斷電。',['Cable/安裝異常','正常'],'再換 Head。'],['交叉/更換 Head','驗證。',['Head故障','仍異常'],'仍異常查驅動/機構。']]},
+{
+ id:'svc-honeywell-px940-lss',brand:'Honeywell (Datamax/Intermec)',models:['PX940'],category:'Service｜LSS／Media Sensor',severity:'高價值',
+ title:'PX940｜窄標籤校正失敗：前後 LSS 對位、紙材與 Sensor 硬體層',sources:['honeywell_px940','honeywell_px940_faq'],
+ summary:'PX940 使用窄媒體時，原廠特別提醒前後 Label Stop Sensor(LSS) 的位置需正確對齊；校正失敗先處理位置與紙材，再進硬體。',
+ keyFacts:['窄標籤時 Sensor 對位比一般寬紙更敏感。','前後 LSS 未對齊會造成 Calibration 不穩。','先用正常紙材交叉再拆 Sensor。'],
+ engineering:['記錄 LSS 原位置。','清潔與重新對位後重做 Calibration。','固定無反應才查線束/輸入。'],
+ verify:['窄標籤可完成 Calibration','50 張無跳標','FEED 一次一張','重開正常'],
+ flow:[['確認紙材規格','Gap/Mark/寬度。',['正確','已修正'],'先排紙。'],['對齊前後 LSS','確認實際標籤經過感應區。',['已對齊','位置已修正'],'窄紙重點。'],['重新 Calibration','依原廠流程。',['成功','失敗'],'失敗再硬體。'],['清潔/紙材交叉','排透明/預印刷。',['恢復','仍異常'],'再拆。'],['LSS/線束/輸入收斂','斷電檢查。',['Sensor/線束故障','控制輸入方向高','已修復'],'不猜 Pin。']]},
+{
+ id:'svc-datamax-iclass-feed-drive',brand:'Honeywell (Datamax/Intermec)',models:['I-4212e','I-4310e','I-4606e'],category:'Service｜Drive Motor／Main PCB',severity:'高',
+ title:'I-Class Mark II｜FEED 不走：Drive Motor、Gear/Platen、PSU、Main Logic PCB',sources:['datamax_iclass_op','datamax_iclass_maint','honeywell_iclass'],
+ summary:'I-Class Mark II 的維修資料可把 FEED 不走拆成機構阻力、Drive Motor、PSU 供電與 Main Logic PCB；工程上應依此順序收斂，不先換主板。',
+ keyFacts:['Motor 有聲但不走先查 Gear/Platen/機構。','Motor 完全無反應需同時考慮供電、線束與 Driver。','主板放在 Motor/線束/供電之後。'],
+ engineering:['斷電檢查 Drive Train。','依 Maintenance Manual 指定測試點量測，不把其他 Datamax 型號數值混用。','可交叉 Motor 時先交叉。'],
+ verify:['FEED 正常','100 張不失步','無 Gear 異音','Motor 不過熱'],
+ flow:[['解除錯誤狀態','Head/Media/Ribbon/Cutter 錯誤先排。',['完成','仍有錯誤'],'錯誤可能阻止 FEED。'],['觀察 Motor 反應','無聲/有聲不走/抖動。',['無聲','有聲不走','抖動'],'分流。'],['檢查 Drive Train','Gear/Platen/Belt/卡料。',['異常','正常'],'機構先修。'],['Motor/PSU/線束','依手冊量測與交叉。',['Motor/線束故障','供電異常','正常'],'再主板。'],['Main Logic PCB 收斂','前段正常仍無驅動。',['主板方向高','找到其他原因'],'記錄。']]},
+{
+ id:'svc-toshiba-bex-threshold',brand:'TOSHIBA',models:['B-EX4T1','B-EX4T2','B-EX4T3','B-EX6T'],category:'Service｜Threshold／Sensor',severity:'高價值',
+ title:'TOSHIBA B-EX｜REFLECT/TRANS Threshold、PE/Ribbon Sensor 與硬體收斂',sources:['toshiba_bex4','toshiba_manuals'],
+ summary:'B-EX 系列有明確的 Reflective/Transmissive Threshold 與 PE/Ribbon Sensor 調整概念；先判斷用哪種 Sensor，再做 Threshold/校正，失敗才查硬體。',
+ keyFacts:['REFLECT 與 TRANS 不可混用。','Paper End 與 Ribbon Sensor 是不同訊號。','先記錄原 Threshold，避免越調越亂。'],
+ engineering:['用正常耗材建立基準。','Sensor 讀值完全不隨紙材變化才值得拆線路。','精確調整值依該機型手冊。'],
+ verify:['FEED 一次一張','50 張無跳標','PE/Ribbon End 正確','Threshold 重開後穩定'],
+ flow:[['確認 Sensor 類型','Reflective/Transmissive。',['正確','已修正'],'先排設定。'],['記錄並調 Threshold','依原廠手冊。',['成功','失敗'],'保留原值。'],['正常紙材交叉','排耗材。',['恢復','仍異常'],'再硬體。'],['清潔/對位 Sensor','確認實際通過感應區。',['恢復','仍異常'],'再拆。'],['Sensor/線束/控制板收斂','斷電檢查。',['Sensor/線束故障','控制輸入方向高','已修復'],'不猜數值。']]}
+].forEach(x=>addRepairKB(x));

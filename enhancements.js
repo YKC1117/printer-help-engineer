@@ -103,6 +103,5 @@ window.focusUnanswered=focusUnanswered;window.showAllSteps=showAllSteps;
 
 document.addEventListener('DOMContentLoaded',()=>{
   injectQuickPanel();
-  const stat=$('headerStat');if(stat)stat.textContent=`v3.1｜${typeof PRODUCTS!=='undefined'?PRODUCTS.length:0} 型號｜${typeof GENERIC!=='undefined'?Object.keys(GENERIC).length:0} 故障流程`;
   if(search){search.placeholder='例如：ZT610、110Xi4、220Xi4、TH240、P4-650';}
 });

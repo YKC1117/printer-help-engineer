@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const version=meta.version||'版本未載入';
   const updated=meta.updated||'未知時間';
   const stat=document.getElementById('headerStat');
-  if(stat) stat.textContent=`${version}｜更新 ${updated}`;
+  if(stat) stat.textContent=version;
   document.title=`萬里資訊｜工程師標籤機故障排查工具 ${version}｜更新 ${updated}`;
   const footer=document.querySelector('footer');
   if(footer && !footer.querySelector('.build-meta-line')){

@@ -84,18 +84,21 @@ for(const p of products){
     sop:list.filter(a=>a.evidence==='workflow-sop'||/SOP|保養|交機|收機|交叉測試|零件採購/.test(a.category||'')).length
   };
 }
-const thinModels=Object.entries(modelCoverage).filter(([,x])=>x.total<3).map(([m,x])=>({model:m,...x})).sort((a,b)=>a.total-b.total||a.model.localeCompare(b.model));
-const noSourced=Object.entries(modelCoverage).filter(([,x])=>x.sourced===0).map(([m,x])=>({model:m,...x}));
+const rows=Object.entries(modelCoverage).map(([model,x])=>({model,...x}));
+const thinModels=rows.filter(x=>x.total<3).sort((a,b)=>a.total-b.total||a.model.localeCompare(b.model));
+const noSourced=rows.filter(x=>x.sourced===0).sort((a,b)=>a.model.localeCompare(b.model));
+const shallowSourced=rows.filter(x=>x.sourced>0&&x.sourced<3).sort((a,b)=>a.sourced-b.sourced||a.model.localeCompare(b.model));
 if(thinModels.length)advisories.push(`${thinModels.length} 個型號專屬資料少於 3 篇`);
 if(noSourced.length)advisories.push(`${noSourced.length} 個型號沒有來源化專屬文章`);
+if(shallowSourced.length)advisories.push(`${shallowSourced.length} 個型號來源化專屬文章少於 3 篇`);
 
 const sourceLevels={};
 for(const s of Object.values(sources))sourceLevels[s.level||'未標示']=(sourceLevels[s.level||'未標示']||0)+1;
 const report={
-  schema:1,
+  schema:2,
   generatedAt:new Date().toISOString(),
-  summary:{entries:kb.length,sources:Object.keys(sources).length,catalogModels:products.length,errors:errors.length,warnings:warnings.length,advisories:advisories.length,thinModels:thinModels.length,noSourcedModels:noSourced.length},
-  errors,warnings,advisories,thinModels,noSourcedModels:noSourced,modelCoverage,sourceLevels
+  summary:{entries:kb.length,sources:Object.keys(sources).length,catalogModels:products.length,errors:errors.length,warnings:warnings.length,advisories:advisories.length,thinModels:thinModels.length,noSourcedModels:noSourced.length,shallowSourcedModels:shallowSourced.length},
+  errors,warnings,advisories,thinModels,noSourcedModels:noSourced,shallowSourcedModels:shallowSourced,modelCoverage,sourceLevels
 };
 fs.writeFileSync(path.join(root,'dist','kb-quality.json'),JSON.stringify(report,null,2)+'\n');
 
@@ -103,4 +106,4 @@ if(errors.length||warnings.length){
   const lines=[...errors.map(x=>`ERROR: ${x}`),...warnings.map(x=>`WARNING: ${x}`)];
   throw new Error(`KB Deep Audit 未通過：${errors.length} errors / ${warnings.length} warnings\n${lines.slice(0,50).join('\n')}`);
 }
-console.log(`KB Deep Audit OK｜${kb.length} entries｜${products.length} models｜thin ${thinModels.length}｜no-sourced ${noSourced.length}`);
+console.log(`KB Deep Audit OK｜${kb.length} entries｜${products.length} models｜thin ${thinModels.length}｜no-sourced ${noSourced.length}｜shallow-sourced ${shallowSourced.length}`);

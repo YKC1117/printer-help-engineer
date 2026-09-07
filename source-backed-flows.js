@@ -16,6 +16,14 @@
   put('Zebra',zt600,['列印太淡／不清楚','固定缺線／白線','列印歪斜／左右深淺不一','紙張越走越偏'],'zebra-zt600-quality');
   put('Zebra',zt600,['切刀不切／卡刀','印字頭過熱／列印一段時間就暫停','開機卡住／面板異常'],'zebra-zt600-alerts');
 
+  const zt400=['ZT411','ZT421'];
+  put('Zebra',zt400,['Ribbon Out／色帶用盡','Paper Out／紙張用盡','校正一直吐紙／停不下來','列印位置偏移'],'zebra-zt400-sensor');
+  put('Zebra',zt400,['列印太淡／不清楚','固定缺線／白線','列印歪斜／左右深淺不一','紙張越走越偏','碳帶皺褶／破碳'],'zebra-zt400-pressure');
+  put('Zebra',zt400,['切刀不切／卡刀'],'zebra-zt400-cutter');
+
+  put('Zebra',['ZT231'],['Ribbon Out／色帶用盡','Paper Out／紙張用盡','校正一直吐紙／停不下來','列印位置偏移','列印太淡／不清楚','固定缺線／白線'],'zebra-zt231-cal-quality');
+  put('Zebra',['ZT231'],['開機卡住／面板異常','無法開機／完全沒反應'],'zebra-zt231-boot');
+
   const th=['TH240','TH340'];
   put('TSC',th,['Paper Out／紙張用盡','校正一直吐紙／停不下來','列印位置偏移'],'tsc-th240-media');
   put('TSC',th,['列印太淡／不清楚','固定缺線／白線','列印空白／完全沒字'],'tsc-th240-tph');
@@ -33,6 +41,6 @@
 
   if(typeof EXTRA_SYMPTOMS!=='undefined'){
     const add=(brand,model,name)=>{const k=`${brand}|${model}`,v=EXTRA_SYMPTOMS[k]||[];if(!v.includes(name))EXTRA_SYMPTOMS[k]=[...v,name];};
-    [...xi4,...zt600].forEach(m=>add('Zebra',m,'列印歪斜／左右深淺不一'));
+    [...xi4,...zt600,...zt400].forEach(m=>add('Zebra',m,'列印歪斜／左右深淺不一'));
   }
 })();

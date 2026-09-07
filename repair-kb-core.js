@@ -24,7 +24,20 @@ window.KB_SOURCES={
   argox_os214:{label:'Argox OS-214EX Pro / OS-200 Pro User Manual',level:'A｜原廠',url:'https://www.argox.com/docfile/usermanual/OS-214EX_Pro_OS-200_Pro_Users_Manual_V1.0_EN.pdf'},
   argox_cp:{label:'Argox CP-EX / CX Series User Manual V1.9',level:'A｜原廠',url:'https://www.argox.com/docfile/usermanual/CP-EX-Series_CX-Series-User-Manual_V1.9_EN.pdf'},
   sato_clnx_cal:{label:'SATO CL4NX Plus Sensor Calibration',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/main/main_GUID-53F86AA6-8E10-4242-816F-EAEFDE1B67E3.html'},
-  sato_clnx_quality:{label:'SATO CL4NX Plus Print Quality Troubleshooting',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/troubleshooting/troubleshooting_GUID-42359747-2FCD-4099-AD0F-EC78944595E2.html'}
+  sato_clnx_quality:{label:'SATO CL4NX Plus Print Quality Troubleshooting',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/troubleshooting/troubleshooting_GUID-42359747-2FCD-4099-AD0F-EC78944595E2.html'},
+  sato_clnx_ribbon:{label:'SATO CL4NX Plus Ribbon Near End / Ribbon Sensor',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/main/main_GUID-6319F1AA-A6F6-422E-8D63-BEAC08AE1204.html'},
+  sato_clnx_offset:{label:'SATO CL4NX Plus Print Stop / Cut Position Troubleshooting',level:'A｜原廠',url:'https://www.manual.sato-global.com/printer/clnxplus/troubleshooting/troubleshooting_GUID-21D8A0B5-F0ED-437B-9B47-28192D163E64.html'},
+  honeywell_pm45:{label:'Honeywell PM45 / PM45c / PM65 Product & User Guide Resources',level:'A｜原廠',url:'https://automation.honeywell.com/us/en/products/productivity-solutions/printers/industrial-printers/pm45-industrial-printer'},
+  honeywell_pm45_cal:{label:'Honeywell PM45 User Guide – Label Taken / Gap / Black Mark Sensor Calibration',level:'B｜原廠文件鏡像',url:'https://www.manualslib.com/manual/3651634/Honeywell-Pm45.html?page=76'},
+  honeywell_px940:{label:'Honeywell PX940 Industrial Printer Resources',level:'A｜原廠',url:'https://automation.honeywell.com/us/en/products/productivity-solutions/printers/industrial-printers/px940-industrial-printer'},
+  honeywell_px940_faq:{label:'Honeywell PX940 Media / Ribbon / UI FAQ',level:'A｜原廠',url:'https://automation.honeywell.com/us/en/news/featured-stories/productivity-solutions/honeywell-px940-industrial-printer-22-faqs-about-media-ribbon-support-and-user-interface'},
+  honeywell_iclass:{label:'Honeywell I-Class Mark II Resources / Operator Manual',level:'A｜原廠舊機支援',url:'https://automation.honeywell.com/us/en/products/productivity-solutions/printers/industrial-printers/i-class-mid-range-industrial-printers'},
+  datamax_iclass_op:{label:'Datamax I-Class Mark II Operator Manual – Media Calibration',level:'B｜原廠文件鏡像',url:'https://manualzz.com/doc/12971096/i-4212e-user-guide'},
+  datamax_iclass_maint:{label:'Datamax I-Class Mark II Maintenance Manual – Sensor / Drive Troubleshooting',level:'B｜原廠文件鏡像',url:'https://www.manualslib.com/manual/743029/Datamax-I-Class-Mark-Ii.html'},
+  godex_zx1000i:{label:'GoDEX ZX1200i+/ZX1300i+/ZX1600i+ Product / Calibration Resources',level:'A｜原廠',url:'https://www.godexintl.cn/product/17096179925062382'},
+  godex_g500:{label:'GoDEX G500+ / G530+ User Manual Resources',level:'B｜原廠文件鏡像',url:'https://www.manualslib.com/manual/4396507/Godex-G500Plus-Series.html'},
+  toshiba_ba410:{label:'Toshiba TEC BA410T / BA420T Driver, Setting Tool & Manuals',level:'A｜原廠',url:'https://www.toshibatec.co.jp/support/download/BA410T/'},
+  toshiba_bex4:{label:'Toshiba B-EX4T1 Sensor / Threshold Settings Manual',level:'B｜原廠文件鏡像',url:'https://manualzz.com/doc/48532779/toshiba-b-ex4t1-series-barcode-printer-owner-s-manual'}
 };
 window.REPAIR_KB=[];
 window.addRepairKB=function(x){window.REPAIR_KB.push(x)};

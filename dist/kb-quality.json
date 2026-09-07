@@ -1,0 +1,1268 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-09-07T05:04:22.487Z",
+  "summary": {
+    "entries": 1028,
+    "sources": 95,
+    "catalogModels": 117,
+    "errors": 0,
+    "warnings": 0,
+    "advisories": 1,
+    "thinModels": 0,
+    "noSourcedModels": 5
+  },
+  "errors": [],
+  "warnings": [],
+  "advisories": [
+    "5 個型號沒有來源化專屬文章"
+  ],
+  "thinModels": [],
+  "noSourcedModels": [
+    {
+      "model": "ZR658",
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    {
+      "model": "ZR668",
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    {
+      "model": "ZQ511",
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    {
+      "model": "ZQ521",
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    {
+      "model": "QLn420",
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    }
+  ],
+  "modelCoverage": {
+    "ZT610": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 71,
+      "sourced": 71,
+      "aParts": 5,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZT620": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 71,
+      "sourced": 71,
+      "aParts": 5,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZT510": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 28,
+      "sourced": 28,
+      "aParts": 3,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "220Xi4": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 58,
+      "sourced": 58,
+      "aParts": 7,
+      "bParts": 0,
+      "internal": 1,
+      "sop": 5
+    },
+    "110Xi4": {
+      "brand": "Zebra",
+      "status": "維修常見舊機",
+      "total": 58,
+      "sourced": 58,
+      "aParts": 7,
+      "bParts": 0,
+      "internal": 1,
+      "sop": 5
+    },
+    "ZT411": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 53,
+      "sourced": 53,
+      "aParts": 5,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZT421": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 53,
+      "sourced": 53,
+      "aParts": 5,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZT231": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 28,
+      "sourced": 28,
+      "aParts": 3,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZT111": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 27,
+      "sourced": 27,
+      "aParts": 3,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZT210": {
+      "brand": "Zebra",
+      "status": "已停產",
+      "total": 24,
+      "sourced": 24,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZT220": {
+      "brand": "Zebra",
+      "status": "已停產",
+      "total": 24,
+      "sourced": 24,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZT230": {
+      "brand": "Zebra",
+      "status": "已停產",
+      "total": 24,
+      "sourced": 24,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZD621": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 25,
+      "sourced": 25,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZD421": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 27,
+      "sourced": 27,
+      "aParts": 2,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZD888TA": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 6,
+      "sourced": 6,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZD220": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 6,
+      "sourced": 6,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZD230": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 6,
+      "sourced": 6,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GX420": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 20,
+      "sourced": 20,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GX430": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 20,
+      "sourced": 20,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GK420": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 20,
+      "sourced": 20,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GT800": {
+      "brand": "Zebra",
+      "status": "維修常見舊機",
+      "total": 20,
+      "sourced": 20,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZR658": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZR668": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZQ511": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "ZQ521": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "QLn420": {
+      "brand": "Zebra",
+      "status": "官網產品頁",
+      "total": 5,
+      "sourced": 0,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "iX4-200 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 45,
+      "sourced": 19,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "iX4-240 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 45,
+      "sourced": 19,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "iX4-250 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 45,
+      "sourced": 19,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "iX4-350 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 38,
+      "sourced": 12,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "P4-250 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 36,
+      "sourced": 36,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "P4-350 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 36,
+      "sourced": 36,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "P4-650 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 29,
+      "sourced": 29,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "P4-650": {
+      "brand": "Argox",
+      "status": "維修常見舊機",
+      "total": 55,
+      "sourced": 55,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 1,
+      "sop": 5
+    },
+    "CX-3140 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 29,
+      "sourced": 29,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "CX-2140 Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 29,
+      "sourced": 29,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "OS-214EX Pro": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 20,
+      "sourced": 20,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "CP-2140EX": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 29,
+      "sourced": 29,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "CP-3140EX": {
+      "brand": "Argox",
+      "status": "官網產品頁",
+      "total": 29,
+      "sourced": 29,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "CP-3140L": {
+      "brand": "Argox",
+      "status": "已停產",
+      "total": 6,
+      "sourced": 6,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "CP-2140M": {
+      "brand": "Argox",
+      "status": "已停產",
+      "total": 6,
+      "sourced": 6,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "OS-214plus": {
+      "brand": "Argox",
+      "status": "已停產",
+      "total": 19,
+      "sourced": 19,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "MH241": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 57,
+      "sourced": 57,
+      "aParts": 0,
+      "bParts": 4,
+      "internal": 0,
+      "sop": 5
+    },
+    "MH341": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 57,
+      "sourced": 57,
+      "aParts": 0,
+      "bParts": 4,
+      "internal": 0,
+      "sop": 5
+    },
+    "MH641": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 57,
+      "sourced": 57,
+      "aParts": 0,
+      "bParts": 4,
+      "internal": 0,
+      "sop": 5
+    },
+    "MH640": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 51,
+      "sourced": 51,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 5
+    },
+    "MB240T": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 39,
+      "sourced": 39,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "MB340T": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 39,
+      "sourced": 39,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "TX610": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 28,
+      "sourced": 28,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "TH240": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 49,
+      "sourced": 49,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "TH340": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 49,
+      "sourced": 49,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "TE210": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 41,
+      "sourced": 41,
+      "aParts": 0,
+      "bParts": 2,
+      "internal": 0,
+      "sop": 5
+    },
+    "TE310": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 41,
+      "sourced": 41,
+      "aParts": 0,
+      "bParts": 2,
+      "internal": 0,
+      "sop": 5
+    },
+    "TE200": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 41,
+      "sourced": 41,
+      "aParts": 0,
+      "bParts": 2,
+      "internal": 0,
+      "sop": 5
+    },
+    "TE300": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 41,
+      "sourced": 41,
+      "aParts": 0,
+      "bParts": 2,
+      "internal": 0,
+      "sop": 5
+    },
+    "TTP-247": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 31,
+      "sourced": 31,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "TTP-345": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 31,
+      "sourced": 31,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "TTP-244 PRO": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 30,
+      "sourced": 30,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "DA210": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 19,
+      "sourced": 1,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "DA220": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 19,
+      "sourced": 1,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "Alpha-3R": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 18,
+      "sourced": 1,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GX4200i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 33,
+      "sourced": 14,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "GX4300i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 33,
+      "sourced": 14,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "GX4600i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 33,
+      "sourced": 14,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZX420i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 45,
+      "sourced": 45,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZX430i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 45,
+      "sourced": 45,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZX1200i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 46,
+      "sourced": 46,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZX1300i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 46,
+      "sourced": 46,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 5
+    },
+    "ZX1600i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 46,
+      "sourced": 46,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 5
+    },
+    "EZ2250i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "EZ2350i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "EZ6250i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "EZ6350i": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GE300": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 22,
+      "sourced": 22,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "GE330": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 22,
+      "sourced": 22,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "EZ120": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 22,
+      "sourced": 22,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "G500+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 24,
+      "sourced": 24,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "G530+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 24,
+      "sourced": 24,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "RT700i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 23,
+      "sourced": 23,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "RT730i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 23,
+      "sourced": 23,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "RT863i+": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 23,
+      "sourced": 23,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "DT2x": {
+      "brand": "GoDEX",
+      "status": "官網產品頁",
+      "total": 22,
+      "sourced": 22,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "G500": {
+      "brand": "GoDEX",
+      "status": "已停產",
+      "total": 9,
+      "sourced": 9,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "G530": {
+      "brand": "GoDEX",
+      "status": "已停產",
+      "total": 9,
+      "sourced": 9,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "EZ520": {
+      "brand": "GoDEX",
+      "status": "已停產",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "EZ530": {
+      "brand": "GoDEX",
+      "status": "已停產",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "BA410T": {
+      "brand": "TOSHIBA",
+      "status": "官網產品頁",
+      "total": 33,
+      "sourced": 33,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 6
+    },
+    "B-EX4T1": {
+      "brand": "TOSHIBA",
+      "status": "官網產品頁",
+      "total": 56,
+      "sourced": 56,
+      "aParts": 0,
+      "bParts": 2,
+      "internal": 0,
+      "sop": 5
+    },
+    "B-EX4T2": {
+      "brand": "TOSHIBA",
+      "status": "官網產品頁",
+      "total": 54,
+      "sourced": 54,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "B-EX4T3": {
+      "brand": "TOSHIBA",
+      "status": "官網產品頁",
+      "total": 54,
+      "sourced": 54,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "B-EX6T": {
+      "brand": "TOSHIBA",
+      "status": "官網產品頁",
+      "total": 48,
+      "sourced": 48,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "BA420T": {
+      "brand": "TOSHIBA",
+      "status": "官網產品頁",
+      "total": 33,
+      "sourced": 33,
+      "aParts": 0,
+      "bParts": 1,
+      "internal": 0,
+      "sop": 6
+    },
+    "SA4TM": {
+      "brand": "TOSHIBA",
+      "status": "已停產",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "CL4-SXR": {
+      "brand": "SATO",
+      "status": "官網產品頁",
+      "total": 27,
+      "sourced": 27,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "CL4NX Plus": {
+      "brand": "SATO",
+      "status": "官網產品頁",
+      "total": 64,
+      "sourced": 64,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 6
+    },
+    "PX940": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "官網產品頁",
+      "total": 44,
+      "sourced": 44,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "PM45": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "官網產品頁",
+      "total": 51,
+      "sourced": 51,
+      "aParts": 2,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "PX240S": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "官網產品頁",
+      "total": 7,
+      "sourced": 7,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "H-4212X": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 35,
+      "sourced": 15,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "H-4310X": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 35,
+      "sourced": 15,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "H-4606X": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 35,
+      "sourced": 15,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "H-4212": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 28,
+      "sourced": 8,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "H-4310": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 28,
+      "sourced": 8,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "H-4408": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 28,
+      "sourced": 8,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "H-4606": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 28,
+      "sourced": 8,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "I-4212e": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 50,
+      "sourced": 50,
+      "aParts": 2,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "I-4310e": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 50,
+      "sourced": 50,
+      "aParts": 2,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "I-4606e": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 50,
+      "sourced": 50,
+      "aParts": 2,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "M-4206": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 37,
+      "sourced": 17,
+      "aParts": 3,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "M-4210": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 37,
+      "sourced": 17,
+      "aParts": 3,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "M-4308": {
+      "brand": "Honeywell (Datamax/Intermec)",
+      "status": "已停產",
+      "total": 37,
+      "sourced": 17,
+      "aParts": 3,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 5
+    },
+    "140Xi4": {
+      "brand": "Zebra",
+      "status": "已停產",
+      "total": 3,
+      "sourced": 3,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "170Xi4": {
+      "brand": "Zebra",
+      "status": "已停產",
+      "total": 3,
+      "sourced": 3,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "TH240T": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 3,
+      "sourced": 3,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "TH340T": {
+      "brand": "TSC",
+      "status": "官網產品頁",
+      "total": 3,
+      "sourced": 3,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "P4-250": {
+      "brand": "Argox",
+      "status": "已停產",
+      "total": 11,
+      "sourced": 11,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    },
+    "P4-350": {
+      "brand": "Argox",
+      "status": "已停產",
+      "total": 11,
+      "sourced": 11,
+      "aParts": 0,
+      "bParts": 0,
+      "internal": 0,
+      "sop": 0
+    }
+  },
+  "sourceLevels": {
+    "A｜原廠": 44,
+    "A｜原廠舊機支援": 3,
+    "A｜原廠舊機文件": 1,
+    "B｜原廠文件鏡像": 7,
+    "A｜原廠零件目錄": 10,
+    "A｜原廠支援": 2,
+    "A｜原廠維護": 3,
+    "A｜原廠設定": 1,
+    "A｜原廠錯誤碼": 1,
+    "A｜原廠安裝指南": 2,
+    "A｜原廠配件指南": 3,
+    "B｜原廠零件表鏡像": 4,
+    "B｜專業零件商": 3,
+    "B｜品牌專門經銷商": 6,
+    "B｜品牌專門通路": 2,
+    "B｜授權服務零件通路": 1,
+    "B｜專業條碼設備商": 2
+  }
+}

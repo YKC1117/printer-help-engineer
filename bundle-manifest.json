@@ -70,6 +70,7 @@
     "model-search-fuzzy-patch.js",
     "case-history-plus.js",
     "case-submission-privacy.js",
+    "case-history-import.js",
     "enhancements.js",
     "repair-kb-ui.js",
     "repair-kb-search-patch.js",
@@ -84,6 +85,7 @@
     "workflow-phrase-rules.js",
     "customer-phrase-clear.js",
     "app-smoke-check.js",
+    "system-health-panel.js",
     "build-meta.js"
   ]
 }

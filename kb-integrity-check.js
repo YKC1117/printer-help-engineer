@@ -13,7 +13,7 @@
     const seenTopic=new Map();
     const brandCount={};
     const categoryCount={};
-    const evidenceCount={'原廠料號':0,'內部實機案例':0,'工程SOP':0,'有來源資料':0,'通用工程基線':0};
+    const evidenceCount={'A原廠料號':0,'B雙來源料號':0,'內部實機案例':0,'工程SOP':0,'有來源資料':0,'通用工程基線':0};
 
     list.forEach((x,i)=>{
       const pos=i+1;
@@ -35,13 +35,21 @@
       if(!Array.isArray(x.flow)||!x.flow.length)warnings.push(`${tag} 沒有排查流程 flow`);
       else x.flow.forEach((step,si)=>{if(!Array.isArray(step)||step.length<3)errors.push(`${tag} flow 第 ${si+1} 步格式錯誤`);else{if(typeof step[0]!=='string'||!step[0].trim())errors.push(`${tag} flow 第 ${si+1} 步缺少標題`);if(typeof step[1]!=='string'||!step[1].trim())warnings.push(`${tag} flow 第 ${si+1} 步缺少說明`);if(!Array.isArray(step[2])||!step[2].length)warnings.push(`${tag} flow 第 ${si+1} 步沒有結果選項`);}});
       if(!Array.isArray(x.sources)||!x.sources.length){
-        if(ev==='oem-parts'||ev==='source-backed')errors.push(`${tag} 標示為 ${ev} 但沒有來源`);
+        if(ev==='oem-parts'||ev==='source-backed'||ev==='verified-b-parts')errors.push(`${tag} 標示為 ${ev} 但沒有來源`);
         else if(!ev.startsWith('internal-field')&&ev!=='workflow-sop')warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
       }else for(const s of x.sources){if(!sources[s])errors.push(`${tag} 使用不存在的來源代號：${s}`);}
 
       if(ev==='oem-parts'){
-        evidenceCount['原廠料號']++;
-        if(!/料號|P\/N|Parts|Printhead|Platen|Cutter|Sensor|Drive|Electronics|Ribbon/i.test([x.title,...(x.keyFacts||[])].join(' ')))warnings.push(`${tag} 標示為原廠料號但內容未見料號/零件資訊`);
+        evidenceCount['A原廠料號']++;
+        if(!/料號|P\/N|Parts|Printhead|Platen|Cutter|Sensor|Drive|Electronics|Ribbon|Media Options/i.test([x.title,...(x.keyFacts||[])].join(' ')))warnings.push(`${tag} 標示為原廠料號但內容未見料號/零件資訊`);
+      }else if(ev==='verified-b-parts'){
+        evidenceCount['B雙來源料號']++;
+        const uniqueSources=[...new Set(x.sources||[])];
+        if(uniqueSources.length<2)errors.push(`${tag} 為 B 級精確料號但少於兩個獨立來源`);
+        if(x.verification!=='dual-source')errors.push(`${tag} 為 B 級精確料號但 verification 不是 dual-source`);
+        if(!x.evidenceNote)warnings.push(`${tag} 為 B 級精確料號但缺 evidenceNote`);
+        const bCount=uniqueSources.filter(s=>String(sources[s]?.level||'').startsWith('B｜')).length;
+        if(bCount<2)warnings.push(`${tag} B 級雙來源中，標示為 B 級的來源少於 2 個；請人工確認來源等級`);
       }else if(ev.startsWith('internal-field')){
         evidenceCount['內部實機案例']++;
         if(!x.evidenceNote)warnings.push(`${tag} 為內部實機案例但缺 evidenceNote`);

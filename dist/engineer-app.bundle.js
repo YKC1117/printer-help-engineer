@@ -1054,7 +1054,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 window.APP_BUILD={
   version:'v3.3',
-  updated:'2026/09/07 12:49',
+  updated:'2026/09/07 12:56',
   timezone:'Asia/Taipei'
 };
 

@@ -35,12 +35,12 @@
       if(!Array.isArray(x.flow)||!x.flow.length)warnings.push(`${tag} 沒有排查流程 flow`);
       else x.flow.forEach((step,si)=>{if(!Array.isArray(step)||step.length<3)errors.push(`${tag} flow 第 ${si+1} 步格式錯誤`);else{if(typeof step[0]!=='string'||!step[0].trim())errors.push(`${tag} flow 第 ${si+1} 步缺少標題`);if(typeof step[1]!=='string'||!step[1].trim())warnings.push(`${tag} flow 第 ${si+1} 步缺少說明`);if(!Array.isArray(step[2])||!step[2].length)warnings.push(`${tag} flow 第 ${si+1} 步沒有結果選項`);}});
       if(!Array.isArray(x.sources)||!x.sources.length){
-        if(!ev.startsWith('internal-field')&&ev!=='workflow-sop')warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
-      }else for(const s of x.sources){if(!sources[s])warnings.push(`${tag} 使用不存在的來源代號：${s}`);}
+        if(ev==='oem-parts'||ev==='source-backed')errors.push(`${tag} 標示為 ${ev} 但沒有來源`);
+        else if(!ev.startsWith('internal-field')&&ev!=='workflow-sop')warnings.push(`${tag} 沒有來源；應確認是否只是工程通用基線`);
+      }else for(const s of x.sources){if(!sources[s])errors.push(`${tag} 使用不存在的來源代號：${s}`);}
 
       if(ev==='oem-parts'){
         evidenceCount['原廠料號']++;
-        if(!Array.isArray(x.sources)||!x.sources.length)errors.push(`${tag} 標示為原廠料號但沒有來源`);
         if(!/料號|P\/N|Parts|Printhead|Platen|Cutter|Sensor|Drive|Electronics|Ribbon/i.test([x.title,...(x.keyFacts||[])].join(' ')))warnings.push(`${tag} 標示為原廠料號但內容未見料號/零件資訊`);
       }else if(ev.startsWith('internal-field')){
         evidenceCount['內部實機案例']++;
@@ -60,7 +60,7 @@
     if(warnings.length)console.warn('[萬里維修資料庫] 資料警告：',warnings);
     if(errors.length){
       console.error('[萬里維修資料庫] 完整性錯誤：',errors);
-      const box=document.createElement('div');box.id='kbIntegrityAlert';box.style.cssText='max-width:1240px;margin:10px auto;padding:10px 14px;border:1px solid #ef4444;border-radius:10px;background:#fef2f2;color:#991b1b;font-size:12px;font-weight:800';box.textContent=`⚠️ 維修資料庫自檢發現 ${errors.length} 個結構錯誤，請暫停依賴新增資料並查看 Console。`;document.body.insertBefore(box,document.body.firstChild);
+      const box=document.createElement('div');box.id='kbIntegrityAlert';box.style.cssText='max-width:1240px;margin:10px auto;padding:10px 14px;border:1px solid #ef4444;border-radius:10px;background:#fef2f2;color:#991b1b;font-size:12px;font-weight:800';box.textContent=`⚠️ 維修資料庫自檢發現 ${errors.length} 個結構/來源錯誤，請暫停依賴新增資料並查看 Console。`;document.body.insertBefore(box,document.body.firstChild);
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',runKBIntegrityCheck,{once:true});else runKBIntegrityCheck();

@@ -1,6 +1,6 @@
 'use strict';
 
-// 本機維修案例紀錄 v3：本機保留完整案件；確認完修後可產生「去識別化」提交包，交由維護者加入私人 GitHub 共用案例庫。
+// 本機維修案例紀錄：本機保留完整案件；確認完修後可產生「去識別化」提交包，交由維護者加入私人 GitHub 共用案例庫。
 (function(){
   const el=id=>document.getElementById(id);
   function injectFields(){
@@ -96,7 +96,7 @@
       verify:x.verify||'',
       sharedNote:x.sharedNote||'',
       evidence:answers,
-      sourceBuild:window.APP_BUILD?`${APP_BUILD.version} ${APP_BUILD.updated}`:'v3.3',
+      sourceBuild:window.APP_BUILD?`${APP_BUILD.version} ${APP_BUILD.updated}`:'版本未載入',
       privacy:'已自動排除 customer / serial / engineer / notes；共享摘要請勿含客戶識別資料'
     };
   }

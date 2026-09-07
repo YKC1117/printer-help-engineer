@@ -1,7 +1,6 @@
 'use strict';
 
-// v3.3 performance patch：維修資料庫搜尋不再每打一個字就整頁重建。
-// 2026-09-07 大資料庫模式：完整索引全部資料，但畫面先顯示 60 筆，避免 200+ 卡片一次建立造成 LAG。
+// v3.3 大資料庫搜尋：完整索引全部資料，分批顯示；提高精確機型、完整片語與證據型內容的排序品質。
 (function(){
   if(typeof window.renderKB!=='function'||typeof window.REPAIR_KB==='undefined')return;
 
@@ -11,14 +10,20 @@
   let visibleLimit=60;
   const PAGE_SIZE=60;
 
+  const norm=s=>String(s||'').toLowerCase().replace(/[\s_\-–—/／()（）\[\]【】]+/g,'');
+
   function ensureIndex(){
     if(indexedLength===REPAIR_KB.length)return;
     searchIndex=REPAIR_KB.map(a=>({
       a,
       title:(a.title||'').toLowerCase(),
+      titleN:norm(a.title),
       category:(a.category||'').toLowerCase(),
       models:(a.models||[]).join(' ').toLowerCase(),
-      hay:[a.title,a.brand,a.category,a.summary,...(a.models||[]),...(a.keyFacts||[]),...(a.engineering||[]),...(a.verify||[])].join(' ').toLowerCase()
+      modelNorms:(a.models||[]).map(norm),
+      evidence:(a.evidence||'').toLowerCase(),
+      sourceCount:(a.sources||[]).length,
+      hay:[a.title,a.brand,a.category,a.summary,a.evidence,a.evidenceNote,...(a.models||[]),...(a.keyFacts||[]),...(a.engineering||[]),...(a.verify||[])].join(' ').toLowerCase()
     }));
     indexedLength=REPAIR_KB.length;
   }
@@ -30,17 +35,32 @@
   function scoreList(q,br,cat,only,cur){
     ensureIndex();
     const tokens=q.split(/[\s,，、/／|｜]+/).map(x=>x.trim()).filter(x=>x.length>=2);
+    const qn=norm(q);
+    const wantsCase=/案例|實測|field|case/.test(q);
+    const wantsSop=/sop|保養|交機|完修|換件|料號|收機|交叉測試/.test(q);
     return searchIndex.map(x=>{
       let score=0;
       if(!q)score=1;
-      else if(tokens.length){
+      else {
+        if(qn&&x.titleN.includes(qn))score+=12;
         for(const t of tokens){
+          const tn=norm(t);
           if(x.hay.includes(t))score+=1;
-          if(x.title.includes(t))score+=4;
-          if(x.models.includes(t))score+=6;
+          if(x.title.includes(t))score+=5;
           if(x.category.includes(t))score+=2;
+          for(const mn of x.modelNorms){
+            if(!tn)continue;
+            if(mn===tn)score+=24;
+            else if(mn.startsWith(tn))score+=14;
+            else if(mn.includes(tn))score+=8;
+          }
         }
-      }else if(x.hay.includes(q))score=1;
+        if(wantsCase&&x.evidence.startsWith('internal-field'))score+=8;
+        if(wantsSop&&x.evidence==='workflow-sop')score+=6;
+        if(x.sourceCount)score+=1;
+      }
+      // 已選機型時，即使沒有勾「只看目前機型」，同機型文章優先。
+      if(cur&&x.a.models.includes(cur))score+=4;
       return {a:x.a,score};
     }).filter(x=>(!q||x.score>0)
       &&(br==='全部'||x.a.brand===br)
@@ -55,7 +75,7 @@
     const brands=['全部',...new Set(REPAIR_KB.map(a=>a.brand))];
     const cats=['全部',...new Set(REPAIR_KB.map(a=>a.category))];
     const cur=currentModel();
-    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；畫面採分批顯示，避免資料量增加後卡頓。</div></div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：ZT610 Ribbon Sensor、Cutter、TPH、IP…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
+    box.innerHTML=`<div class="kb-head"><span class="badge">v3.3 維修資料庫</span><h1>原廠資料＋現場案例｜深度維修知識庫</h1><div class="small">目前 ${REPAIR_KB.length} 套深度主題。完整資料全部可搜尋；精確機型、完整故障片語與實機案例會優先排序。</div></div><div class="kb-filter"><input id="kbSearch" placeholder="搜尋：110X Ribbon Sensor、ZT61 Cutter、1015、印一印重開…"><select id="kbBrand">${brands.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><select id="kbCat">${cats.map(x=>`<option>${kbEsc(x)}</option>`).join('')}</select><label class="kb-check"><input id="kbModelOnly" type="checkbox" ${cur?'':'disabled'}> <span id="kbModelOnlyText">只看目前機型${cur?`（${kbEsc(cur)}）`:''}</span></label></div><div class="kb-count" id="kbCount"></div><div class="kb-grid" id="kbGrid"></div><div id="kbMoreWrap"></div><div id="kbDetail"></div>`;
 
     const input=$('kbSearch');
     input.addEventListener('input',()=>{
@@ -93,7 +113,7 @@
     const scored=scoreList(q,br,cat,only,cur);
     const fullList=scored.map(x=>x.a);
     const shown=fullList.slice(0,visibleLimit);
-    count.innerHTML=`找到 <b>${fullList.length}</b> 筆${q?'（依關鍵詞相關度排序）':''}${fullList.length>shown.length?`｜目前顯示 ${shown.length} 筆`:''}`;
+    count.innerHTML=`找到 <b>${fullList.length}</b> 筆${q?'（依機型／片語／證據相關度排序）':''}${fullList.length>shown.length?`｜目前顯示 ${shown.length} 筆`:''}`;
     grid.innerHTML=shown.map(kbCard).join('')||'<div class="kb-empty">找不到符合的維修資料，請縮短關鍵詞或改用故障名稱。</div>';
     grid.querySelectorAll('[data-kb]').forEach(b=>b.onclick=()=>openKBArticle(b.dataset.kb));
     if(more){

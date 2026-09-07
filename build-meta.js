@@ -2,7 +2,7 @@
 
 window.APP_BUILD={
   version:'v3.3',
-  updated:'2026/09/07 12:47',
+  updated:'2026/09/07 12:49',
   timezone:'Asia/Taipei'
 };
 

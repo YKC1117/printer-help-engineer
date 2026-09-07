@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import vm from 'node:vm';
 
 const root=process.cwd();
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'bundle-manifest.json'),'utf8'));
@@ -37,6 +38,92 @@ fs.writeFileSync(path.join(dist,'repair-data.bundle.js'),data);
 fs.writeFileSync(path.join(dist,'engineer-app.bundle.js'),app);
 fs.writeFileSync(path.join(dist,'engineer.bundle.css'),css);
 
+function validateRepairData(){
+  const quietConsole={log(){},info(){},warn(){},error(){}};
+  const fakeElement=()=>({style:{},appendChild(){},insertAdjacentElement(){},setAttribute(){},querySelector(){return null},querySelectorAll(){return[]},scrollIntoView(){}});
+  const sandbox={
+    console:quietConsole,
+    setTimeout(){return 0},clearTimeout(){},
+    location:{protocol:'file:',href:'file:///index.html'},navigator:{},
+    document:{
+      readyState:'loading',
+      addEventListener(){},
+      getElementById(){return null},
+      createElement:fakeElement,
+      body:{firstChild:null,insertBefore(){},appendChild(){}},
+      querySelector(){return null},querySelectorAll(){return[]}
+    }
+  };
+  sandbox.window=sandbox;
+  sandbox.globalThis=sandbox;
+  const context=vm.createContext(sandbox);
+  new vm.Script(data,{filename:'repair-data.bundle.js'}).runInContext(context,{timeout:10000});
+
+  const kb=Array.isArray(context.REPAIR_KB)?context.REPAIR_KB:[];
+  const sources=context.KB_SOURCES||{};
+  const products=vm.runInContext('typeof PRODUCTS!=="undefined" ? PRODUCTS : []',context);
+  if(!kb.length)throw new Error('資料 Bundle 執行後 REPAIR_KB 為空');
+
+  const errors=[];
+  const warnings=[];
+  const ids=new Set();
+  const knownModels=new Set((products||[]).map(p=>String(p.m||'').trim()).filter(Boolean));
+  const coveredModels=new Set();
+  const brandCount={};
+  const categoryCount={};
+  const evidenceCount={'A原廠料號':0,'B雙來源料號':0,'內部實機案例':0,'工程SOP':0,'有來源資料':0,'通用工程基線':0};
+
+  for(const [i,x] of kb.entries()){
+    const tag=x?.id||`#${i+1}`;
+    if(!x?.id)errors.push(`${tag} 缺 id`);
+    else if(ids.has(x.id))errors.push(`重複 id：${x.id}`);
+    else ids.add(x.id);
+    if(x?.brand)brandCount[x.brand]=(brandCount[x.brand]||0)+1;
+    if(x?.category)categoryCount[x.category]=(categoryCount[x.category]||0)+1;
+    if(!Array.isArray(x?.models)||!x.models.length)warnings.push(`${tag} 沒有 models`);
+    else for(const m of x.models){
+      if(m!=='ALL'){
+        coveredModels.add(m);
+        if(knownModels.size&&!knownModels.has(m))warnings.push(`${tag} 機型不在 catalog：${m}`);
+      }
+    }
+    if(!Array.isArray(x?.flow)||!x.flow.length)warnings.push(`${tag} 沒有 flow`);
+    const src=[...new Set(Array.isArray(x?.sources)?x.sources:[])];
+    for(const s of src)if(!sources[s])errors.push(`${tag} 使用不存在的來源：${s}`);
+    const ev=String(x?.evidence||'');
+    if(ev==='oem-parts'){
+      evidenceCount['A原廠料號']++;
+      if(!src.length)errors.push(`${tag} A 原廠料號沒有來源`);
+    }else if(ev==='verified-b-parts'){
+      evidenceCount['B雙來源料號']++;
+      if(src.length<2)errors.push(`${tag} B 雙來源料號少於兩個來源`);
+      if(x.verification!=='dual-source')errors.push(`${tag} B 雙來源料號缺 verification=dual-source`);
+    }else if(ev.startsWith('internal-field'))evidenceCount['內部實機案例']++;
+    else if(ev==='workflow-sop'||/SOP|保養|交機|收機|交叉測試|零件採購/.test(x?.category||''))evidenceCount['工程SOP']++;
+    else if(src.length)evidenceCount['有來源資料']++;
+    else evidenceCount['通用工程基線']++;
+  }
+  if(errors.length)throw new Error(`維修資料驗證失敗（${errors.length}）：\n- ${errors.slice(0,30).join('\n- ')}`);
+
+  const uncovered=[...knownModels].filter(m=>!coveredModels.has(m)).sort();
+  const stats={
+    schema:1,
+    entryCount:kb.length,
+    sourceCount:Object.keys(sources).length,
+    catalogModelCount:knownModels.size,
+    directCoveredModelCount:[...coveredModels].filter(m=>knownModels.has(m)).length,
+    uncoveredModelCount:uncovered.length,
+    uncoveredModels:uncovered,
+    evidenceCount,
+    brandCount,
+    categoryCount,
+    validation:{errors:0,warnings:warnings.length,warningSample:warnings.slice(0,50)}
+  };
+  fs.writeFileSync(path.join(dist,'kb-stats.json'),JSON.stringify(stats,null,2)+'\n');
+  return stats;
+}
+const kbStats=validateRepairData();
+
 // buildId 只取決於正式執行資產內容；任一原始 JS/CSS/asset-guard 改動都會得到新的 cache key。
 const buildSeed=all.map(file=>`FILE:${file}\n${read(file)}`).join('\n---\n');
 const buildId=sha256(buildSeed).slice(0,12);
@@ -67,10 +154,11 @@ function updateIndex(){
 updateIndex();
 
 const meta={
-  schema:2,
+  schema:3,
   generatedAt:new Date().toISOString(),
   buildId,
   sourceCounts:{standalone:standalone.length,css:manifest.css.length,data:manifest.data.length,app:manifest.app.length,total:all.length},
+  kb:{entries:kbStats.entryCount,sources:kbStats.sourceCount,catalogModels:kbStats.catalogModelCount,directCoveredModels:kbStats.directCoveredModelCount,uncoveredModels:kbStats.uncoveredModelCount},
   bundles:{
     'repair-data.bundle.js':{sha256:sha256(data),bytes:Buffer.byteLength(data)},
     'engineer-app.bundle.js':{sha256:sha256(app),bytes:Buffer.byteLength(app)},
@@ -84,4 +172,4 @@ const meta={
   }
 };
 fs.writeFileSync(path.join(dist,'bundle-meta.json'),JSON.stringify(meta,null,2)+'\n');
-console.log(`Bundle 完成：buildId ${buildId}｜Standalone ${standalone.length}、CSS ${manifest.css.length}、Data ${manifest.data.length}、App ${manifest.app.length}，總來源 ${all.length}`);
+console.log(`Bundle 完成：buildId ${buildId}｜資料庫 ${kbStats.entryCount} 筆｜來源 ${kbStats.sourceCount}｜型號覆蓋 ${kbStats.directCoveredModelCount}/${kbStats.catalogModelCount}｜總來源檔 ${all.length}`);

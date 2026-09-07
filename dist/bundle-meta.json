@@ -1,11 +1,13 @@
 {
-  "schema": 1,
-  "generatedAt": "2026-09-07T04:55:05.850Z",
+  "schema": 2,
+  "generatedAt": "2026-09-07T04:55:41.236Z",
+  "buildId": "9c85a8066a62",
   "sourceCounts": {
+    "standalone": 1,
     "css": 4,
     "data": 46,
     "app": 20,
-    "total": 70
+    "total": 71
   },
   "bundles": {
     "repair-data.bundle.js": {
@@ -20,5 +22,11 @@
       "sha256": "116267dd51bcd5d304d98d63b31f73aaf7415b6f96fdf2dc79fc007303ac6649",
       "bytes": 15767
     }
+  },
+  "indexAssets": {
+    "guard": "asset-guard.js?v=9c85a8066a62",
+    "css": "dist/engineer.bundle.css?v=9c85a8066a62",
+    "data": "dist/repair-data.bundle.js?v=9c85a8066a62",
+    "app": "dist/engineer-app.bundle.js?v=9c85a8066a62"
   }
 }

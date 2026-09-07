@@ -6,6 +6,7 @@
     "styles.css",
     "enhancements.css",
     "engineer-tools-plus.css",
+    "engineer-command-center.css",
     "repair-kb.css",
     "customer-phrase-search.css"
   ],
@@ -88,6 +89,7 @@
     "customer-phrase-clear.js",
     "app-smoke-check.js",
     "engineer-tools-plus.js",
+    "engineer-command-center.js",
     "system-health-panel.js",
     "build-meta.js"
   ]

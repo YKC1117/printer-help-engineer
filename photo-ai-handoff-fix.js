@@ -2,7 +2,7 @@
 
 (function(){
   const FEATURE='AI 圖片排查修正版';
-  const AI_VERSION='1.1.0';
+  const AI_VERSION='1.1.1';
   const MAX_WAIT=12000;
   const started=Date.now();
 
@@ -55,7 +55,7 @@
       event.preventDefault();event.stopImmediatePropagation();
       let prompt='';try{prompt=api.buildPrompt()}catch(error){setStatus('error',`⚠️ 無法整理案件：${error?.message||error}`);return}
       if(!prompt)return;
-      const win=window.open('https://chatgpt.com/','_blank');
+      const win=window.open('https://chatgpt.com/','_blank','noopener,noreferrer');
       copyText(prompt).then(()=>{const count=Array.isArray(api.state?.images)?api.state.images.length:0;setStatus('success',count?`✅ 已開啟 ChatGPT，文字已複製。請貼上文字，再把 ${count} 張照片一起拖進 ChatGPT。`:'✅ 已開啟 ChatGPT，排查文字已複製，貼上即可開始排查。')}).catch(error=>setStatus('error',`⚠️ 已開啟 ChatGPT，但複製失敗：${error?.message||error}。請點「只複製排查內容」。`));
       if(!win)setStatus('info','瀏覽器擋住新分頁；請先複製排查內容，再手動開 ChatGPT。');
     },true)}

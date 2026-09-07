@@ -1,25 +1,25 @@
 {
   "schema": 3,
-  "generatedAt": "2026-09-07T04:58:30.225Z",
-  "buildId": "380f579ba5e9",
+  "generatedAt": "2026-09-07T05:01:25.129Z",
+  "buildId": "5c7cee38d96a",
   "sourceCounts": {
     "standalone": 1,
     "css": 4,
-    "data": 46,
+    "data": 48,
     "app": 20,
-    "total": 71
+    "total": 73
   },
   "kb": {
     "entries": 1028,
     "sources": 95,
-    "catalogModels": 111,
-    "directCoveredModels": 111,
+    "catalogModels": 117,
+    "directCoveredModels": 117,
     "uncoveredModels": 0
   },
   "bundles": {
     "repair-data.bundle.js": {
-      "sha256": "48aca5d2c4be5eb42e6ca4c69161dbcb0c5f6416d5996963fed9bbcf52655d2e",
-      "bytes": 489728
+      "sha256": "15db74e904e1797dbce540d41d483f3f6b7c41cda6189f2d014c002143a5ed84",
+      "bytes": 491773
     },
     "engineer-app.bundle.js": {
       "sha256": "7d288a320e700f229d71f7eea254b2a4a697a1ea722400471ffda16dddda9afc",
@@ -31,9 +31,9 @@
     }
   },
   "indexAssets": {
-    "guard": "asset-guard.js?v=380f579ba5e9",
-    "css": "dist/engineer.bundle.css?v=380f579ba5e9",
-    "data": "dist/repair-data.bundle.js?v=380f579ba5e9",
-    "app": "dist/engineer-app.bundle.js?v=380f579ba5e9"
+    "guard": "asset-guard.js?v=5c7cee38d96a",
+    "css": "dist/engineer.bundle.css?v=5c7cee38d96a",
+    "data": "dist/repair-data.bundle.js?v=5c7cee38d96a",
+    "app": "dist/engineer-app.bundle.js?v=5c7cee38d96a"
   }
 }

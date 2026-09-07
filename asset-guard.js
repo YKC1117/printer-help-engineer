@@ -13,7 +13,8 @@
 
   // 可選工具一律獨立載入：任何一支失敗，只影響該工具，不阻斷核心 Bundle。
   const optionalAssets=Object.freeze({
-    'photo-ai-handoff.js':'AI 圖片排查'
+    'photo-ai-handoff.js':'AI 圖片排查',
+    'command-analyzer.js':'指令反向辨識'
   });
   window.__optionalFeatureAssets=optionalAssets;
   window.__optionalFeatureStatus=optionalStatus;
